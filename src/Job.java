@@ -1,16 +1,26 @@
 public class Job {
-    private enum JobType {
-        A,
-        B,
+    private char type;
+    private int id;
+
+    public Job(char type, int id) {
+        this.type = type;
+        this.id = id;
     }
-    private JobType type;
 
-
-    public JobType getType() {
+    public char getType() {
         return type;
     }
-    public void setType(JobType type) {
+
+    public void setType(char type) {
         this.type = type;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Job type=" + type + ", id=" + id;
+    }
 }

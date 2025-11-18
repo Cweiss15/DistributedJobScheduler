@@ -1,6 +1,8 @@
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Client {
     public static void main(String[] args) throws IOException {
@@ -20,29 +22,26 @@ public class Client {
                  PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
                  BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
                  BufferedReader input = new BufferedReader(new InputStreamReader(System.in))) {
-
             Random random = new Random();
             ArrayList<Job> jobs = new ArrayList<>();
             char type;
-            int id;
-            for (int 1=0; i<1000; i++){
+            for (int i = 0; i < 1000; i++) {
                 double probability = random.nextDouble();
                 if (probability <= 0.5)
                     type = 'A';
                 else
                     type = 'B';
-                Job job = new Job(char,i);
+                Job job = new Job(type, i);
                 jobs.add(job);
             }
 
-            for (int i=0; i<jobs.size(); i++){
-                out.println(jobs.get[i]);
+            for (Job job : jobs) {
+                out.println(job);
             }
 
         } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
-        }
         } catch (IOException var51) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);

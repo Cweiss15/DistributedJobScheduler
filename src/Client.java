@@ -1,0 +1,51 @@
+import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class Client {
+    public static void main(String[] args) throws IOException {
+        //Setup port
+        args = new String[]{"127.0.0.1", "31222"};
+        if (args.length != 2) {
+            System.err.println("Usage: java EchoClient <host name> <port number>");
+            System.exit(1);
+        }
+
+        String hostName = args[0];
+        int portNumber = Integer.parseInt(args[1]);
+
+        //Setup client server communication
+        try
+                (Socket serverSocket = new Socket(hostName, portNumber);
+                 PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
+                 BufferedReader in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+                 BufferedReader input = new BufferedReader(new InputStreamReader(System.in))) {
+
+            Random random = new Random();
+            ArrayList<Job> jobs = new ArrayList<>();
+            char type;
+            int id;
+            for (int 1=0; i<1000; i++){
+                double probability = random.nextDouble();
+                if (probability <= 0.5)
+                    type = 'A';
+                else
+                    type = 'B';
+                Job job = new Job(char,i);
+                jobs.add(job);
+            }
+
+            for (int i=0; i<jobs.size(); i++){
+                out.println(jobs.get[i]);
+            }
+
+        } catch (UnknownHostException var50) {
+            System.err.println("Don't know about host " + hostName);
+            System.exit(1);
+        }
+        } catch (IOException var51) {
+            System.err.println("Couldn't get I/O for the connection to " + hostName);
+            System.exit(1);
+        }
+    }
+}

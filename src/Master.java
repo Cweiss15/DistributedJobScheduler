@@ -41,7 +41,6 @@ public class Master {
                 Job job = new Job(onejob[0].charAt(0), Integer.parseInt(onejob[1]));
                 // adds each job to the job list
                 jobList.add(job);
-
                 assignJobs(jobList, slaveAOut, slaveBOut);
             }
         } catch (Exception e) {
@@ -53,11 +52,11 @@ public class Master {
         for (int i = 0; i < jobList.size(); i++) {
             Job job = jobList.get(i);
             if (job.getType() == 'A') {
-                System.out.println("Assign to worker A");
+                System.out.println("Assign to Slave A");
                 slaveAOut.println(job);
 
             } else if (job.getType() == 'B') {
-                System.out.println("Assign to worker B");
+                System.out.println("Assign to Slave B");
                 slaveBOut.println(job);
             }
 

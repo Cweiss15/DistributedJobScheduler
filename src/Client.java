@@ -6,6 +6,8 @@ import java.util.Random;
 
 public class Client {
     public static void main(String[] args) throws IOException {
+        //This is to destinguish Client and Master in console
+        System.out.println("This is Client");
         //Setup port
         args = new String[]{"127.0.0.1", "31222"};
         if (args.length != 2) {

@@ -21,6 +21,6 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Job type=" + type + ", id=" + id;
+        return type + "|" + id + "|";
     }
 }

@@ -27,7 +27,7 @@ public class Client {
             Random random = new Random();
             ArrayList<Job> jobs = new ArrayList<>();
             char type;
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 50; i++) {
                 double probability = random.nextDouble();
                 if (probability <= 0.5)
                     type = 'A';

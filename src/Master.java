@@ -3,6 +3,9 @@ import java.net.*;
 import java.util.*;
 
 public class Master {
+    private static int countA = 0;
+    private static int countB = 0;
+
     public static void main(String[] args) {
         System.out.println("This is Master");
         // default argument used for quick local testing;
@@ -41,25 +44,38 @@ public class Master {
                 Job job = new Job(onejob[0].charAt(0), Integer.parseInt(onejob[1]));
                 // adds each job to the job list
                 jobList.add(job);
-                assignJobs(jobList, slaveAOut, slaveBOut);
+                assignJobs(job, slaveAOut, slaveBOut);
             }
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    private static void assignJobs(ArrayList<Job> jobList, PrintWriter slaveAOut, PrintWriter slaveBOut) {
-        for (int i = 0; i < jobList.size(); i++) {
-            Job job = jobList.get(i);
+    private static void assignJobs(Job job, PrintWriter slaveAOut, PrintWriter slaveBOut) {
+        // assigns a job to slave A if job type is A or if B already has more then 5
+        // jobs
+        if (countB > (countA + 5) && job.getType() == 'B') { // || countA > (countB + 5)
+            System.out.println("Assign to Slave A");
+            slaveAOut.println(job);
+            countA += 5;
+        } else if (countA > (countB + 5) && job.getType() == 'A') {
+            System.out.println("Assign to Slave B");
+            slaveBOut.println(job);
+            countB += 5;
+        }
+
+        else {
             if (job.getType() == 'A') {
                 System.out.println("Assign to Slave A");
                 slaveAOut.println(job);
-
-            } else if (job.getType() == 'B') {
-                System.out.println("Assign to Slave B");
-                slaveBOut.println(job);
+                countA++;
             }
 
+            else {
+                System.out.println("Assign to Slave B");
+                slaveBOut.println(job);
+                countB++;
+            }
         }
     }
 }

@@ -52,18 +52,21 @@ public class Master {
     }
 
     private static void assignJobs(Job job, PrintWriter slaveAOut, PrintWriter slaveBOut) {
-        // assigns a job to slave A if job type is A or if B already has more then 5
-        // jobs
-        if (countB > (countA + 5) && job.getType() == 'B') { // || countA > (countB + 5)
+        // if Slave B already has more then 5 more jobs then Slave A then assign the B
+        // job to A
+        if (countB > (countA + 5) && job.getType() == 'B') {
             System.out.println("Assign to Slave A");
             slaveAOut.println(job);
+            // B job increases A's count by 5
             countA += 5;
-        } else if (countA > (countB + 5) && job.getType() == 'A') {
-            System.out.println("Assign to Slave B");
+        } else if (countA > (countB + 5) && job.getType() == 'A') { // if Slave A already has more then 5 more jobs then
+                                                                    // B
+            System.out.println("Assign to Slave B"); // assign the A job to B
             slaveBOut.println(job);
+            // A job increases B's count by 5
             countB += 5;
         }
-
+        // otherwise assign normally
         else {
             if (job.getType() == 'A') {
                 System.out.println("Assign to Slave A");

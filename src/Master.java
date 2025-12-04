@@ -8,7 +8,6 @@ public class Master {
 
     public static void main(String[] args) {
         System.out.println("This is Master");
-        // default argument used for quick local testing;
         args = new String[] { "31222", "" };
 
         if (args.length < 2) {
@@ -18,8 +17,6 @@ public class Master {
 
         int portNumber = Integer.parseInt(args[0]);
 
-        // The server uses try-with-resources so sockets/streams are closed
-        // automatically.
         try (ServerSocket serverSocket = new ServerSocket(portNumber);
                 Socket clientSocket = serverSocket.accept();
                 PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);

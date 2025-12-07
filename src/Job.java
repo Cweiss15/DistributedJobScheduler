@@ -23,4 +23,11 @@ public class Job {
     public String toString() {
         return type + "|" + id + "|";
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Job job = (Job) obj;
+        return type == job.type && id == job.id;
+    }
 }

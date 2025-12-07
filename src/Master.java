@@ -8,58 +8,80 @@ public class Master {
 
     public static void main(String[] args) {
         System.out.println("This is Master");
-        args = new String[] { "31222", "" };
-
-        if (args.length < 2) {
-            System.err.println("Usage: java message <port number> <message>");
-            System.exit(1);
-        }
+        args = new String[]{"31222", ""};
 
         int portNumber = Integer.parseInt(args[0]);
 
         try (ServerSocket serverSocket = new ServerSocket(portNumber);
-                Socket clientSocket = serverSocket.accept();
-                PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader clientIn = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
+             Socket clientSocket = serverSocket.accept();
+             PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
+             BufferedReader clientIn = new BufferedReader(
+                     new InputStreamReader(clientSocket.getInputStream()));
 
-                Socket slaveASocket = new Socket("", portNumber);
-                PrintWriter slaveAOut = new PrintWriter(slaveASocket.getOutputStream(), true);
-                BufferedReader slaveAIn = new BufferedReader(
-                        new InputStreamReader(slaveASocket.getInputStream()));
+             Socket slaveASocket = serverSocket.accept();
+             PrintWriter slaveAOut = new PrintWriter(slaveASocket.getOutputStream(), true);
+             BufferedReader slaveAIn = new BufferedReader(
+                     new InputStreamReader(slaveASocket.getInputStream()));
 
-                Socket slaveBSocket = new Socket("", portNumber);
-                PrintWriter slaveBOut = new PrintWriter(slaveBSocket.getOutputStream(), true);
-                BufferedReader slaveBIn = new BufferedReader(
-                        new InputStreamReader(slaveBSocket.getInputStream()));) {
+             Socket slaveBSocket = serverSocket.accept();
+             PrintWriter slaveBOut = new PrintWriter(slaveBSocket.getOutputStream(), true);
+             BufferedReader slaveBIn = new BufferedReader(
+                     new InputStreamReader(slaveBSocket.getInputStream()))) {
 
             ArrayList<Job> jobList = new ArrayList<>();
             String jobString;
             while ((jobString = clientIn.readLine()) != null) {
-                // splits the job string into individual jobs
-                String[] onejob = jobString.split("\\|");
-                Job job = new Job(onejob[0].charAt(0), Integer.parseInt(onejob[1]));
+                Job job = splitJobString(jobString);
                 // adds each job to the job list
                 jobList.add(job);
                 assignJobs(job, slaveAOut, slaveBOut);
             }
+            String doneJobAString;
+            while ((doneJobAString = slaveAIn.readLine()) != null) {
+                sendDoneJobToClient(clientOut, doneJobAString, jobList);
+            }
+            String doneJobBString;
+            while ((doneJobBString = slaveBIn.readLine()) != null) {
+                sendDoneJobToClient(clientOut, doneJobBString, jobList);
+            }
+
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
+    // splits the job string into individual jobs
+    private static Job splitJobString(String jobString) {
+        String[] onejob = jobString.split("\\|");
+        Job job = new Job(onejob[0].charAt(0), Integer.parseInt(onejob[1]));
+        return job;
+    }
+
+    //sends finished jobs back to the client, removes finished jobs from the job list
+    private static void sendDoneJobToClient(PrintWriter clientOut, String doneJob, ArrayList<Job> jobList) {
+        Job job = splitJobString(doneJob);
+        Thread clientOutThread = new Thread(new MasterToClientThread(clientOut, job));
+        clientOutThread.start();
+        jobList.remove(job);
+    }
+
+    // assigns jobs to the correct slave
     private static void assignJobs(Job job, PrintWriter slaveAOut, PrintWriter slaveBOut) {
         // if Slave B already has more then 5 more jobs then Slave A then assign the B
         // job to A
         if (countB > (countA + 5) && job.getType() == 'B') {
             System.out.println("Assign to Slave A");
-            slaveAOut.println(job);
+            // Use MasterToSlaveAThread for the master to assign a job to slave A
+            Thread threadA1 = new Thread(new MasterToSlaveAThread(slaveAOut, job));
+            threadA1.start();
             // B job increases A's count by 5
             countA += 5;
-        } else if (countA > (countB + 5) && job.getType() == 'A') { // if Slave A already has more then 5 more jobs then
-                                                                    // B
+            // if Slave A already has more then 5 more jobs then B
+        } else if (countA > (countB + 5) && job.getType() == 'A') {
             System.out.println("Assign to Slave B"); // assign the A job to B
-            slaveBOut.println(job);
+            // Use MasterToSlaveBThread for the master to assign a job to slave B
+            Thread threadB1 = new Thread(new MasterToSlaveBThread(slaveBOut, job));
+            threadB1.start();
             // A job increases B's count by 5
             countB += 5;
         }
@@ -67,13 +89,15 @@ public class Master {
         else {
             if (job.getType() == 'A') {
                 System.out.println("Assign to Slave A");
-                slaveAOut.println(job);
+                // Use MasterToSlaveAThread for the master to assign a job to slave A
+                Thread threadA2 = new Thread(new MasterToSlaveAThread(slaveAOut, job));
+                threadA2.start();
                 countA++;
-            }
-
-            else {
+            } else {
                 System.out.println("Assign to Slave B");
-                slaveBOut.println(job);
+                // Use MasterToSlaveBThread for the master to assign a job to slave B
+                Thread threadB2 = new Thread(new MasterToSlaveBThread(slaveBOut, job));
+                threadB2.start();
                 countB++;
             }
         }

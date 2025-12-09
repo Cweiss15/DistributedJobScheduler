@@ -31,7 +31,7 @@ public class Master {
             ArrayList<Job> jobList = new ArrayList<>();
             String jobString;
             while ((jobString = clientIn.readLine()) != null) {
-                Job job = splitJobString(jobString);
+                Job job = new Job(jobString);
                 // adds each job to the job list
                 jobList.add(job);
                 assignJobs(job, slaveAOut, slaveBOut);
@@ -50,16 +50,9 @@ public class Master {
         }
     }
 
-    // splits the job string into individual jobs
-    private static Job splitJobString(String jobString) {
-        String[] onejob = jobString.split("\\|");
-        Job job = new Job(onejob[0].charAt(0), Integer.parseInt(onejob[1]));
-        return job;
-    }
-
     //sends finished jobs back to the client, removes finished jobs from the job list
     private static void sendDoneJobToClient(PrintWriter clientOut, String doneJob, ArrayList<Job> jobList) {
-        Job job = splitJobString(doneJob);
+        Job job = new Job(doneJob);
         Thread clientOutThread = new Thread(new MasterToClientThread(clientOut, job));
         clientOutThread.start();
         jobList.remove(job);

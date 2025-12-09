@@ -6,6 +6,11 @@ public class Job {
         this.type = type;
         this.id = id;
     }
+    public Job(String jobString) {
+        String[] parts = jobString.split("\\|");
+        this.type = parts[0].charAt(0);
+        this.id = Integer.parseInt(parts[1]);
+    }
 
     public char getType() {
         return type;

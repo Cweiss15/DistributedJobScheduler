@@ -1,6 +1,6 @@
 public class Job {
     private char type;
-    private int id;
+    private final int id;
 
     public Job(char type, int id) {
         this.type = type;

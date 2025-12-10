@@ -1,11 +1,11 @@
 import java.io.PrintWriter;
 
-public class MasterToSlaveAThread implements Runnable {
+public class MasterToSlaveThread implements Runnable {
     private final PrintWriter slaveAOut;
     private final Job job;
 
     //constructor
-    public MasterToSlaveAThread(PrintWriter slaveAOut, Job job) {
+    public MasterToSlaveThread(PrintWriter slaveAOut, Job job) {
         this.slaveAOut = slaveAOut;
         this.job =job;
     }

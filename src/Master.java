@@ -34,7 +34,7 @@ public class Master {
                 Job job = new Job(jobString);
                 // adds each job to the job list
                 jobList.add(job);
-                assignJobs(job, slaveAOut, slaveBOut);
+                assignJob(job, slaveAOut, slaveBOut);
             }
             String doneJobAString;
             while ((doneJobAString = slaveAIn.readLine()) != null) {
@@ -59,22 +59,21 @@ public class Master {
     }
 
     // assigns jobs to the correct slave
-    private static void assignJobs(Job job, PrintWriter slaveAOut, PrintWriter slaveBOut) {
-        // if Slave B already has more then 5 more jobs then Slave A then assign the B
+    private static void assignJob(Job job, PrintWriter slaveAOut, PrintWriter slaveBOut) {
+        PrintWriter masterToSlaveOut = null;
+        // if Slave B already has more than 5 more jobs than Slave A then assign the B
         // job to A
         if (countB > (countA + 5) && job.getType() == 'B') {
             System.out.println("Assign to Slave A");
-            // Use MasterToSlaveAThread for the master to assign a job to slave A
-            Thread threadA1 = new Thread(new MasterToSlaveAThread(slaveAOut, job));
-            threadA1.start();
+            // Use MasterToSlaveThread for the master to assign a job to slave A
+            masterToSlaveOut = slaveAOut;
             // B job increases A's count by 5
             countA += 5;
             // if Slave A already has more then 5 more jobs then B
         } else if (countA > (countB + 5) && job.getType() == 'A') {
             System.out.println("Assign to Slave B"); // assign the A job to B
-            // Use MasterToSlaveBThread for the master to assign a job to slave B
-            Thread threadB1 = new Thread(new MasterToSlaveBThread(slaveBOut, job));
-            threadB1.start();
+            // Use MasterToSlaveThread for the master to assign a job to slave B
+            masterToSlaveOut = slaveBOut;
             // A job increases B's count by 5
             countB += 5;
         }
@@ -82,17 +81,17 @@ public class Master {
         else {
             if (job.getType() == 'A') {
                 System.out.println("Assign to Slave A");
-                // Use MasterToSlaveAThread for the master to assign a job to slave A
-                Thread threadA2 = new Thread(new MasterToSlaveAThread(slaveAOut, job));
-                threadA2.start();
+                // Use MasterToSlaveThread for the master to assign a job to slave A
+                masterToSlaveOut = slaveAOut;
                 countA++;
             } else {
                 System.out.println("Assign to Slave B");
-                // Use MasterToSlaveBThread for the master to assign a job to slave B
-                Thread threadB2 = new Thread(new MasterToSlaveBThread(slaveBOut, job));
-                threadB2.start();
+                // Use MasterToSlaveThread for the master to assign a job to slave B
+                masterToSlaveOut = slaveBOut;
                 countB++;
             }
         }
+        Thread masterToSlaveThread = new Thread(new MasterToSlaveThread(masterToSlaveOut, job));
+        masterToSlaveThread.start();
     }
 }

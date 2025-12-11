@@ -41,6 +41,14 @@ public class Client {
                 out.println(job);
             }
 
+            String jobString;
+            while ((jobString = in.readLine()) != null) {
+                // splits the job string into individual jobs
+                String[] onejob = jobString.split("\\|");
+                Job job = new Job(onejob[0].charAt(0), Integer.parseInt(onejob[1]));
+               System.out.println("Job" + job.getId() + "has been completed.");
+            }
+
         } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);

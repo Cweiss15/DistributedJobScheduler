@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class MasterToSlaveAThread implements Runnable {
     private final PrintWriter slaveAOut;
     private BufferedReader slaveAIn;
-    ArrayList<Job> AJobs = new ArrayList<>();
-    ArrayList<Job> doneJobs = new ArrayList<>();
+    private synchronized volatile ArrayList<Job> AJobs = new ArrayList<>();
+    private synchronized volatile ArrayList<Job> doneJobs = new ArrayList<>();
 
     //constructor
     public MasterToSlaveAThread(BufferedReader slaveAIn, PrintWriter slaveAOut, ArrayList<Job> AJobs,ArrayList<Job> doneJobs) {

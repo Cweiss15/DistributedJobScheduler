@@ -14,11 +14,18 @@ public class MasterToClientThread implements Runnable {
     public void run() {
         int cnt = 0;
         while (true) {
-            while (doneJobs.isEmpty()) {
-                clientOut.println(doneJobs.get(cnt));
-                clientOut.flush();
-                cnt++;
+            Job job = null;
+            
+            // Synchronize to safely get a job from doneJobs ArrayList
+            synchronized (doneJobs) {
+                while (!doneJobs.isEmpty()) {
+                job = doneJobs.get(cnt);
             }
+            
+            // Send done job to client
+            clientOut.println(job);
+            clientOut.flush();
+            cnt++;
         }
     }
 }

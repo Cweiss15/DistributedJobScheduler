@@ -49,16 +49,12 @@ public class Master {
             Thread masterTOSlaveBThread = new Thread(new MasterToSlaveBThread(slaveBIn, slaveBOut, BJobs, doneJobs));
             masterTOSlaveBThread.start();
 
+            //sends finished jobs back to the client, takes jobs from donelist and sends to client
+            Thread masterToClientThread = new Thread(new MasterToClientThread(clientOut, doneJobs));
+            masterToClientThread.start();
+
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
-    }
-
-    //sends finished jobs back to the client, removes finished jobs from the job list
-    private static void sendDoneJobToClient(PrintWriter clientOut, String doneJob, ArrayList<Job> jobList) {
-        Job job = new Job(doneJob);
-        Thread clientOutThread = new Thread(new MasterToClientThread(clientOut, job));
-        clientOutThread.start();
-        jobList.remove(job);
     }
 }

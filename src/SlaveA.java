@@ -28,7 +28,7 @@ public class SlaveA {
              BufferedReader in = new BufferedReader( new InputStreamReader(masterSocket.getInputStream()))) {
 
             // inform master that this slave is ready to receive jobs
-            out.println("READY:A");
+            //out.println("READY:A");
             System.out.println("Slave A connected and ready.");
 
             String jobMessage;
@@ -57,7 +57,9 @@ public class SlaveA {
 
                     System.out.println("Slave A completed job " + jobId);
                     // Send back the completed job in the same format
-                    out.println("DONE:" + job.toString());
+                    //out.println("DONE:" + job.toString());
+                    //question for sonya: the master assumes that if a job is sent back its done do we need to write done because it would be easier to just send back the job itself
+                    out.println(job.toString());
                 } catch (InterruptedException e) {
                     System.err.println("Job processing interrupted: " + e.getMessage());
                     Thread.currentThread().interrupt();

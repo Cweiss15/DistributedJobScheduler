@@ -16,6 +16,13 @@ public class AssignJobsThread implements Runnable {
 
     public void run() {
         while (forever) {
+            while (jobList.isEmpty()){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
             Job job = jobList.getFirst();
             // if Slave B already has more than 5 more jobs than Slave A then assign the B
             // job to A

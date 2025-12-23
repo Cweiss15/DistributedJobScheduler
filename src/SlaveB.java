@@ -28,7 +28,7 @@ public class SlaveB {
              BufferedReader in = new BufferedReader( new InputStreamReader(masterSocket.getInputStream()))) {
 
             // inform master that this slave is ready to receive jobs
-            out.println("READY:B");
+            //out.println("READY:B");
             System.out.println("Slave B connected and ready.");
 
             String jobMessage;
@@ -57,7 +57,7 @@ public class SlaveB {
 
                     System.out.println("Slave B completed job " + jobId);
                     // Send back the completed job in the same format
-                    out.println("DONE:" + job.toString());
+                    out.println(job.toString());
                 } catch (InterruptedException e) {
                     System.err.println("Job processing interrupted: " + e.getMessage());
                     Thread.currentThread().interrupt();

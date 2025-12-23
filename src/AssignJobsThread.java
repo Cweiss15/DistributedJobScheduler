@@ -15,6 +15,8 @@ public class AssignJobsThread implements Runnable {
     }
 
     public void run() {
+        //test
+        System.out.println("Assigning Jobs");
         while (forever) {
             while (jobList.isEmpty()){
                 try {

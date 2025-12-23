@@ -18,6 +18,8 @@ public class ClientToMasterThread implements Runnable{
                 Job job = new Job(jobString);
                 // adds each job to the job list
                 jobList.add(job);
+                //test
+                System.out.println("Job" + job.getId() + "has been received from client and added to the job list.");
             }
         }catch (IOException e){
             System.err.println("Error: " + e.getMessage());

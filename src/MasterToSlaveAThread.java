@@ -24,10 +24,15 @@ public class MasterToSlaveAThread implements Runnable {
             while (true) {
                 while (!AJobs.isEmpty()) {
                     Job job = AJobs.get(0);
+                    //send slave A a job
+                    //test
+                    System.out.println(job.toString()+" given to slave a");
                     slaveAOut.println(job);
                     slaveAOut.flush();
                     while (!slaveAIn.readLine().equals(job.toString())) ;
                     doneJobs.add(job);
+                    //test
+                    System.out.println("done job list"+doneJobs);
                     AJobs.remove(0);
                 }
             }

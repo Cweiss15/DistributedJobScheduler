@@ -51,6 +51,7 @@ public class Master {
             Thread masterToClientThread = new Thread(new MasterToClientThread(clientOut, doneJobs));
             masterToClientThread.start();
 
+            clientToMasterThread.join();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }

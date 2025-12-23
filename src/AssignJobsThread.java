@@ -1,4 +1,3 @@
-import java.io.PrintWriter;
 import java.util.*;
 
 public class AssignJobsThread implements Runnable {
@@ -52,4 +51,3 @@ public class AssignJobsThread implements Runnable {
         }
     }
 }
-

@@ -1,2 +1,6 @@
-public class SlaveBToMasterThread {
+public class SlaveBToMasterThread implements Runnable {
+    @Override
+    public void run() {
+
+    }
 }

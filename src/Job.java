@@ -2,7 +2,7 @@ public class Job {
     private char type;
     private final int id;
 
-    public Job(char type, int id) {
+    public Job(char type, int id, String name) {
         this.type = type;
         this.id = id;
     }

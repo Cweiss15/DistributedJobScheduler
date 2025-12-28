@@ -11,8 +11,19 @@ public class ClientToMasterThread extends Thread {
     }
 
     public void run() {
-        for (Job job : jobs) {
-            masterOut.println(job.toString());
+        while (true) {
+            if (!jobs.isEmpty()) {
+                Job job = jobs.poll();
+                if (job != null) {
+                    System.out.println("Client sending job to master: " + job);
+                    masterOut.println(job.toString());
+                }
+            }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                System.err.println(e.getMessage());
+            }
         }
     }
 }

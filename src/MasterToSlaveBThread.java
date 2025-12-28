@@ -18,16 +18,21 @@ public class MasterToSlaveBThread implements Runnable{
 
     @Override
     public void run() {
-        int cntr = 0;
         try {
-            //it will go forever
             while (true) {
-                while (!BJobs.isEmpty()) {
+                if (!BJobs.isEmpty()) {
                     Job job = BJobs.poll();
-                    slaveBOut.println(job);
-                    slaveBOut.flush();
-                    while (!slaveBIn.readLine().equals(job.toString())) ;
-                    doneJobs.add(job);
+                    if (job != null) {
+                        System.out.println(job.toString()+" given to slave b");
+                        slaveBOut.println(job);
+                        slaveBOut.flush();
+                        
+                        // Wait for slave to respond with a done job
+                        String doneJob = slaveBIn.readLine();
+                        System.out.println("Slave B returned: " + doneJob);
+                        
+                        doneJobs.add(job);
+                    }
                 }
             }
         }catch (Exception e){

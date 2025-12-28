@@ -8,6 +8,7 @@ public class MasterToSlaveAThread implements Runnable {
     private BufferedReader slaveAIn;
     private Queue<Job> AJobs;
     private Queue<Job> doneJobs;
+    private boolean forever = true;
 
     //constructor
     public MasterToSlaveAThread(BufferedReader slaveAIn, PrintWriter slaveAOut, Queue<Job> AJobs,Queue<Job> doneJobs) {
@@ -19,21 +20,22 @@ public class MasterToSlaveAThread implements Runnable {
 
     @Override
     public void run() {
-        int cntr = 0;
         try {
-            //it will go forever
-            while (true) {
-                while (!AJobs.isEmpty()) {
+            while (forever) {
+                if (!AJobs.isEmpty()) {
                     Job job = AJobs.poll();
-                    //send slave A a job
-                    //test
-                    System.out.println(job.toString()+" given to slave a");
-                    slaveAOut.println(job);
-                    slaveAOut.flush();
-                    while (!slaveAIn.readLine().equals(job.toString())) ;
-                    doneJobs.add(job);
-                    //test
-                    System.out.println("done job list"+doneJobs);
+                    if (job != null) {
+                        System.out.println(job.toString()+" given to slave a");
+                        slaveAOut.println(job);
+                        slaveAOut.flush();
+                        
+                        // Wait for slave to respond with a done job
+                        String doneJob = slaveAIn.readLine();
+                        System.out.println("Slave A returned: " + doneJob);
+                        
+                        doneJobs.add(job);
+                        System.out.println("done job list"+doneJobs);
+                    }
                 }
             }
         }catch (Exception e){

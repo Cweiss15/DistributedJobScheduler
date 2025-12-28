@@ -1,31 +1,31 @@
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.*;
 
 public class MasterToClientThread implements Runnable {
     private PrintWriter clientOut;
-    private ArrayList<Job> doneJobs = new ArrayList<>();
+    private Queue<Job> doneJobs = new LinkedList<>();
 
-    public MasterToClientThread(PrintWriter clientOut, ArrayList<Job> doneJobs) {
+    public MasterToClientThread(PrintWriter clientOut, Queue<Job> doneJobs) {
         this.clientOut = clientOut;
         this.doneJobs = doneJobs;
     }
 
     @Override
     public void run() {
-        int cnt = 0;
         while (true) {
-            Job job = null;
-
-            // Synchronize to safely get a job from doneJobs ArrayList
-            synchronized (doneJobs) {
-                while (!doneJobs.isEmpty()) {
-                    job = doneJobs.get(cnt);
+            if (!doneJobs.isEmpty()) {
+                Job job = doneJobs.poll();
+                if (job != null) {
+                    System.out.println("Master sending done job to client: " + job);
+                    clientOut.println(job);
+                    clientOut.flush();
                 }
-
-                // Send done job to client
-                clientOut.println(job);
-                clientOut.flush();
-                cnt++;
+            }
+            
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                System.err.println(e.getMessage());
             }
         }
     }

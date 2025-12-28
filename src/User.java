@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 public class User {
     public static void main(String[] args) {
         System.out.println("This is User");
-        args = new String[]{"31222", ""};
+        args = new String[]{"31223", ""};
 
         int portNumber = Integer.parseInt(args[0]);
 
@@ -17,16 +17,18 @@ public class User {
              Socket clientSocket = serverSocket.accept();
              PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
              BufferedReader clientIn = new BufferedReader(
-                     new InputStreamReader(clientSocket.getInputStream())) {
-                 final Object lock = new Object();
-                 Thread user1 = new UserToClientThread(clientOut, lock, 1);
-                 user1.start();
-                 String doneJob;
-            while((doneJob =clientIn.readLine())!=null)
-
-                 {
-                     System.out.println("completed job: " + doneJob);
-                 }
+                     new InputStreamReader(clientSocket.getInputStream()))) {
+            final Object lock = new Object();
+            Thread user1 = new UserToClientThread(clientOut, lock, 1);
+            user1.start();
+            
+            String doneJob;
+            while (true) {
+                doneJob = clientIn.readLine();
+                if (doneJob != null) {
+                    System.out.println("completed job: " + doneJob);
+                }
+            }
 
              } catch(Exception e) {
             System.err.println("Error: " + e.getMessage());

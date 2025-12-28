@@ -3,10 +3,10 @@ import java.net.*;
 import java.util.*;
 
 public class Master {
-    private static ArrayList<Job> jobList = new ArrayList<>();
-    private static ArrayList<Job> AJobs = new ArrayList<>();
-    private static ArrayList<Job> BJobs = new ArrayList<>();
-    private static ArrayList<Job> doneJobs = new ArrayList<>();
+    private static Queue<Job> jobQueue = new LinkedList<>();
+    private static Queue<Job> AJobs = new LinkedList<>();
+    private static Queue<Job> BJobs = new LinkedList<>();
+    private static Queue<Job> doneJobs = new LinkedList<>();
 
     public static void main(String[] args) {
         System.out.println("This is Master");
@@ -31,12 +31,12 @@ public class Master {
                      new InputStreamReader(slaveBSocket.getInputStream()))) {
 
 
-            //the thread reads from the client and puts the jobs on the ArrayList
-            Thread clientToMasterThread = new Thread(new ClientToMasterThread(clientIn, jobList));
+            //the thread reads from the client and puts the jobs on the Queue
+            Thread clientToMasterThread = new Thread(new MasterReceiveThread(jobQueue, clientIn));
             clientToMasterThread.start();
 
-            //the thread takes the jobs off the ArrayList and assigns them to the correct slave
-            Thread assignJobsThread = new Thread(new AssignJobsThread(jobList, AJobs, BJobs));
+            //the thread takes the jobs off the Queue and assigns them to the correct slave
+            Thread assignJobsThread = new Thread(new AssignJobsThread(jobQueue, AJobs, BJobs));
             assignJobsThread.start();
 
             //thread that takes jobs from the AJob list, waits for a done signal from the slave and sends the finished jobs back to the client

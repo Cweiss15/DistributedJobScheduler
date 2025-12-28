@@ -8,11 +8,9 @@ public class SlaveB {
     public static void main(String[] args) {
         System.out.println("This is Slave B.");
 
-        //checking to see master hostname and masterport
-        if (args.length != 2) {
-            System.out.println("Usage: Slave B, MasterHost, MasterPort");
-            return;
-        }
+        // Default to localhost:31222 if no args provided
+        args = new String[]{"127.0.0.1", "31222"};
+        
         //get the master host and port number
         masterHost = args[0];
         masterPort = Integer.parseInt(args[1]);

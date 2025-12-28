@@ -1,15 +1,15 @@
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.*;
 
 public class MasterToSlaveBThread implements Runnable{
     private final PrintWriter slaveBOut;
     private BufferedReader slaveBIn;
-    ArrayList<Job> BJobs = new ArrayList<>();
-    ArrayList<Job> doneJobs = new ArrayList<>();
+    private Queue<Job> BJobs = new LinkedList<>();
+    private Queue<Job> doneJobs = new LinkedList<>();
 
     //constructor
-    public MasterToSlaveBThread(BufferedReader slaveBIn, PrintWriter slaveBOut, ArrayList<Job> BJobs, ArrayList<Job> doneJobs) {
+    public MasterToSlaveBThread(BufferedReader slaveBIn, PrintWriter slaveBOut, Queue<Job> BJobs, Queue<Job> doneJobs) {
         this.slaveBIn = slaveBIn;
         this.slaveBOut = slaveBOut;
         this.BJobs = BJobs;
@@ -23,12 +23,11 @@ public class MasterToSlaveBThread implements Runnable{
             //it will go forever
             while (true) {
                 while (!BJobs.isEmpty()) {
-                    Job job = BJobs.get(0);
+                    Job job = BJobs.poll();
                     slaveBOut.println(job);
                     slaveBOut.flush();
                     while (!slaveBIn.readLine().equals(job.toString())) ;
                     doneJobs.add(job);
-                    BJobs.remove(0);
                 }
             }
         }catch (Exception e){

@@ -3,12 +3,12 @@ import java.util.*;
 public class AssignJobsThread implements Runnable {
     private static int countA = 0;
     private static int countB = 0;
-    private ArrayList<Job> jobList;
-    private ArrayList<Job> AJobs = new ArrayList<>();
-    private ArrayList<Job> BJobs = new ArrayList<>();
+    private Queue<Job> jobList;
+    private Queue<Job> AJobs = new LinkedList<>();
+    private Queue<Job> BJobs = new LinkedList<>();
     private boolean forever = true;
 
-    public AssignJobsThread(ArrayList<Job> jobList, ArrayList<Job> AJobs, ArrayList<Job> BJobs) {
+    public AssignJobsThread(Queue<Job> jobList, Queue<Job> AJobs, Queue<Job> BJobs) {
         this.jobList = jobList;
         this.AJobs = AJobs;
         this.BJobs = BJobs;
@@ -25,7 +25,7 @@ public class AssignJobsThread implements Runnable {
                     System.err.println(e.getMessage());
                 }
             }
-            Job job = jobList.getFirst();
+            Job job = jobList.poll();
             // if Slave B already has more than 5 more jobs than Slave A then assign the B
             // job to A
             if (countB > (countA + 5) && job.getType() == 'B') {
@@ -56,7 +56,6 @@ public class AssignJobsThread implements Runnable {
                     countB++;
                 }
             }
-            jobList.remove(job);
         }
     }
 }

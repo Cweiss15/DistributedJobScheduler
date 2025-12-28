@@ -26,7 +26,7 @@ public class Client {
                  PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
                  BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
 
-                Socket clientSocket = new Socket(hostName, portNumber);
+                Socket clientSocket = new Socket(hostName, 31223);
                 PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())))
         {

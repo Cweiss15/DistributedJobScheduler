@@ -1,15 +1,16 @@
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class MasterToSlaveAThread implements Runnable {
     private final PrintWriter slaveAOut;
     private BufferedReader slaveAIn;
-    private ArrayList<Job> AJobs;
-    private ArrayList<Job> doneJobs;
+    private Queue<Job> AJobs;
+    private Queue<Job> doneJobs;
 
     //constructor
-    public MasterToSlaveAThread(BufferedReader slaveAIn, PrintWriter slaveAOut, ArrayList<Job> AJobs,ArrayList<Job> doneJobs) {
+    public MasterToSlaveAThread(BufferedReader slaveAIn, PrintWriter slaveAOut, Queue<Job> AJobs,Queue<Job> doneJobs) {
         this.slaveAIn = slaveAIn;
         this.slaveAOut = slaveAOut;
         this.AJobs = AJobs;
@@ -23,7 +24,7 @@ public class MasterToSlaveAThread implements Runnable {
             //it will go forever
             while (true) {
                 while (!AJobs.isEmpty()) {
-                    Job job = AJobs.get(0);
+                    Job job = AJobs.poll();
                     //send slave A a job
                     //test
                     System.out.println(job.toString()+" given to slave a");
@@ -33,7 +34,6 @@ public class MasterToSlaveAThread implements Runnable {
                     doneJobs.add(job);
                     //test
                     System.out.println("done job list"+doneJobs);
-                    AJobs.remove(0);
                 }
             }
         }catch (Exception e){

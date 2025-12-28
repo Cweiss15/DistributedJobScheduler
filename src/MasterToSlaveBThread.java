@@ -7,6 +7,7 @@ public class MasterToSlaveBThread implements Runnable{
     private BufferedReader slaveBIn;
     private Queue<Job> BJobs = new LinkedList<>();
     private Queue<Job> doneJobs = new LinkedList<>();
+    private boolean forever = true;
 
     //constructor
     public MasterToSlaveBThread(BufferedReader slaveBIn, PrintWriter slaveBOut, Queue<Job> BJobs, Queue<Job> doneJobs) {
@@ -19,7 +20,7 @@ public class MasterToSlaveBThread implements Runnable{
     @Override
     public void run() {
         try {
-            while (true) {
+            while (forever) {
                 if (!BJobs.isEmpty()) {
                     Job job = BJobs.poll();
                     if (job != null) {
@@ -29,7 +30,7 @@ public class MasterToSlaveBThread implements Runnable{
                         
                         // Wait for slave to respond with a done job
                         String doneJob = slaveBIn.readLine();
-                        System.out.println("Slave B returned: " + doneJob);
+                        System.out.println("Slave B returned a done job: " + doneJob);
                         
                         doneJobs.add(job);
                     }

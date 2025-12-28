@@ -31,7 +31,7 @@ public class MasterToSlaveAThread implements Runnable {
                         
                         // Wait for slave to respond with a done job
                         String doneJob = slaveAIn.readLine();
-                        System.out.println("Slave A returned: " + doneJob);
+                        System.out.println("Slave A returned a done job: " + doneJob);
                         
                         doneJobs.add(job);
                         System.out.println("done job list"+doneJobs);

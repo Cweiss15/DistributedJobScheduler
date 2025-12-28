@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class AssignJobsThread implements Runnable {
-    private static int countA = 0;
-    private static int countB = 0;
+    private  int countA = 0;
+    private   int countB = 0;
     private Queue<Job> jobList;
     private Queue<Job> AJobs = new LinkedList<>();
     private Queue<Job> BJobs = new LinkedList<>();

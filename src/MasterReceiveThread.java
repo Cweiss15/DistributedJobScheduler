@@ -1,17 +1,17 @@
 import java.io.BufferedReader;
-import java.util.Queue;
 
 public class MasterReceiveThread extends Thread {
-    private Queue<Job> jobs;
+    private SynchronizedJobQueue jobs;
     private BufferedReader clientIn;
+    private boolean forever = true;
 
-    public MasterReceiveThread(Queue<Job> jobs, BufferedReader clientIn) {
+    public MasterReceiveThread(SynchronizedJobQueue jobs, BufferedReader clientIn) {
         this.jobs = jobs;
         this.clientIn = clientIn;
     }
 
     public void run() {
-        while (true) {
+        while (forever) {
             try {
                 String line = clientIn.readLine();
                 if (line != null) {
@@ -20,7 +20,7 @@ public class MasterReceiveThread extends Thread {
                     jobs.add(job);
                 }
             } catch (Exception e) {
-                System.err.println("Error reading from client: " + e.getMessage());
+                System.out.println("Error reading from client: " + e.getMessage());
             }
         }
     }

@@ -6,6 +6,7 @@ public class Job {
         this.type = type;
         this.id = id;
     }
+
     public Job(String jobString) {
         String[] parts = jobString.split("\\|");
         this.type = parts[0].charAt(0);
@@ -28,6 +29,7 @@ public class Job {
     public String toString() {
         return type + "|" + id + "|";
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

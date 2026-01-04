@@ -1,12 +1,13 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Master {
-    private static Queue<Job> jobQueue = new LinkedList<>();
-    private static Queue<Job> AJobs = new LinkedList<>();
-    private static Queue<Job> BJobs = new LinkedList<>();
-    private static Queue<Job> doneJobs = new LinkedList<>();
+    private static SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
+    private static SynchronizedJobQueue AJobs = new SynchronizedJobQueue();
+    private static SynchronizedJobQueue BJobs = new SynchronizedJobQueue();
+    private static SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
 
     public static void main(String[] args) {
         System.out.println("This is Master");

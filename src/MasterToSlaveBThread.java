@@ -1,16 +1,15 @@
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.util.*;
 
 public class MasterToSlaveBThread implements Runnable{
     private final PrintWriter slaveBOut;
     private BufferedReader slaveBIn;
-    private Queue<Job> BJobs = new LinkedList<>();
-    private Queue<Job> doneJobs = new LinkedList<>();
+    private SynchronizedJobQueue BJobs;
+    private SynchronizedJobQueue doneJobs;
     private boolean forever = true;
 
     //constructor
-    public MasterToSlaveBThread(BufferedReader slaveBIn, PrintWriter slaveBOut, Queue<Job> BJobs, Queue<Job> doneJobs) {
+    public MasterToSlaveBThread(BufferedReader slaveBIn, PrintWriter slaveBOut, SynchronizedJobQueue BJobs, SynchronizedJobQueue doneJobs) {
         this.slaveBIn = slaveBIn;
         this.slaveBOut = slaveBOut;
         this.BJobs = BJobs;

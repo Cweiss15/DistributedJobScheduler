@@ -1,14 +1,12 @@
-import java.util.*;
-
 public class AssignJobsThread implements Runnable {
     private  int countA = 0;
     private   int countB = 0;
-    private Queue<Job> jobList;
-    private Queue<Job> AJobs = new LinkedList<>();
-    private Queue<Job> BJobs = new LinkedList<>();
+    private SynchronizedJobQueue jobList;
+    private SynchronizedJobQueue AJobs;
+    private SynchronizedJobQueue BJobs;
     private boolean forever = true;
 
-    public AssignJobsThread(Queue<Job> jobList, Queue<Job> AJobs, Queue<Job> BJobs) {
+    public AssignJobsThread(SynchronizedJobQueue jobList, SynchronizedJobQueue AJobs, SynchronizedJobQueue BJobs) {
         this.jobList = jobList;
         this.AJobs = AJobs;
         this.BJobs = BJobs;

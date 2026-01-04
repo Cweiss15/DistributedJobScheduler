@@ -1,11 +1,10 @@
 import java.io.PrintWriter;
-import java.util.*;
 
 public class MasterToClientThread implements Runnable {
     private PrintWriter clientOut;
-    private Queue<Job> doneJobs = new LinkedList<>();
+    private SynchronizedJobQueue doneJobs;
 
-    public MasterToClientThread(PrintWriter clientOut, Queue<Job> doneJobs) {
+    public MasterToClientThread(PrintWriter clientOut, SynchronizedJobQueue doneJobs) {
         this.clientOut = clientOut;
         this.doneJobs = doneJobs;
     }

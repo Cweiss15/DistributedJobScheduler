@@ -1,11 +1,10 @@
 import java.io.PrintWriter;
-import java.util.Queue;
 
 public class ClientToMasterThread extends Thread {
-    private Queue<Job> jobs;
+    private SynchronizedJobQueue jobs;
     private PrintWriter masterOut;
 
-    public ClientToMasterThread(Queue<Job> jobs, PrintWriter masterOut) {
+    public ClientToMasterThread(SynchronizedJobQueue jobs, PrintWriter masterOut) {
         this.jobs = jobs;
         this.masterOut = masterOut;
     }

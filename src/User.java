@@ -19,9 +19,11 @@ public class User {
              BufferedReader clientIn = new BufferedReader(
                      new InputStreamReader(clientSocket.getInputStream()))) {
             final Object lock = new Object();
-            Thread user1 = new UserToClientThread(clientOut, lock, 1);
-            user1.start();
-            
+            Thread clientA = new UserToClientThread(clientOut, lock, 'A');
+            Thread clientB =  new UserToClientThread(clientOut, lock, 'B');
+            clientA.start();
+            clientB.start();
+
             String doneJob;
             while (true) {
                 doneJob = clientIn.readLine();
@@ -30,7 +32,7 @@ public class User {
                 }
             }
 
-             } catch(Exception e) {
+        } catch(Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
     }

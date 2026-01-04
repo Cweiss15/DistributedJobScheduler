@@ -1,8 +1,8 @@
 public class Job {
     private char type;
-    private final int id;
+    private final String id;
 
-    public Job(char type, int id, String name) {
+    public Job(char type, String id) {
         this.type = type;
         this.id = id;
     }
@@ -10,7 +10,7 @@ public class Job {
     public Job(String jobString) {
         String[] parts = jobString.split("\\|");
         this.type = parts[0].charAt(0);
-        this.id = Integer.parseInt(parts[1]);
+        this.id = parts[1];
     }
 
     public char getType() {
@@ -21,7 +21,7 @@ public class Job {
         this.type = type;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -35,6 +35,6 @@ public class Job {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Job job = (Job) obj;
-        return type == job.type && id == job.id;
+        return type == job.type && id.equals(job.id);
     }
 }

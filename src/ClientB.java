@@ -1,11 +1,14 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client {
+public class ClientB {
     public static void main(String[] args) throws IOException {
         //This is to distinguish Client and Master in console
-        System.out.println("This is Client");
+        System.out.println("This is Client B");
         //Setup port
         args = new String[]{"127.0.0.1", "31222"};
         if (args.length != 2) {
@@ -22,15 +25,14 @@ public class Client {
                  PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
                  BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
 
-                Socket clientSocket = new Socket(hostName, 31223);
+                Socket clientSocket = new Socket(hostName, portNumber);
                 PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
+                PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader clientIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())))
+
         {
-            //Should job have a title?
-            //Should id be a string?
-            //Read in from client (should this also be a thread)
-            //Send to master (is a thread)
-            //Read from master when done, tell user, user prints done (is one or two threads)?
+
             String sendJob;
             SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
             Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut);
@@ -39,10 +41,16 @@ public class Client {
                 Job job = new Job(sendJob);
                 jobQueue.add(job);
             }
+
             String doneJob;
+            SynchronizedJobQueue jobQueues = new SynchronizedJobQueue();
+            ClientToUserThread sendToUser = new ClientToUserThread(jobQueues, clientOut, 'B');
+            sendToUser.start();
             while ((doneJob = masterIn.readLine()) != null) {
-                userOut.println(doneJob);
+                Job job = new Job(doneJob);
+                jobQueue.add(job);
             }
+
 
         } catch(UnknownHostException var50){
             System.err.println("Don't know about host " + hostName);

@@ -1,10 +1,6 @@
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Random;
 
 public class Client {
     public static void main(String[] args) throws IOException {
@@ -36,7 +32,7 @@ public class Client {
             //Send to master (is a thread)
             //Read from master when done, tell user, user prints done (is one or two threads)?
             String sendJob;
-            Queue<Job> jobQueue = new LinkedList<Job>();
+            SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
             Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut);
             sendToMaster.start();
             while ((sendJob = userIn.readLine()) != null) {

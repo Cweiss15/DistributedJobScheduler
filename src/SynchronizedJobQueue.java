@@ -25,4 +25,9 @@ public class SynchronizedJobQueue {
     public synchronized boolean isEmpty() {
         return queue.isEmpty();
     }
+    
+    @Override
+    public String toString() {
+        return queue.toString();
+    }
 }

@@ -15,10 +15,10 @@ public class UserToClientThread extends Thread {
         int ctr = 0;
         while (!jobName.equals("done")) {
             Scanner in = new Scanner(System.in);
-            System.out.println("Enter a job (or done to exit): ");
+            System.out.println("Enter name of a job (or done to exit): ");
             jobName = in.nextLine().toLowerCase();
             System.out.println("Enter job type (A/B): ");
-            char jobType = in.nextLine().toLowerCase().charAt(0);
+            char jobType = in.nextLine().toUpperCase().charAt(0);
             Job job = new Job(jobType, ctr + client, jobName);
             synchronized (lock) {
                 ctr++;

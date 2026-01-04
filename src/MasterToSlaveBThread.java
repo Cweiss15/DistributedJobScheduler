@@ -20,10 +20,8 @@ public class MasterToSlaveBThread implements Runnable{
     public void run() {
         try {
             while (forever) {
-                if (!BJobs.isEmpty()) {
                     Job job = BJobs.poll();
-                    if (job != null) {
-                        System.out.println(job.toString()+" given to slave b");
+                        System.out.println(job.toString()+" given to slave B");
                         slaveBOut.println(job);
                         slaveBOut.flush();
                         
@@ -32,10 +30,9 @@ public class MasterToSlaveBThread implements Runnable{
                         System.out.println("Slave B returned a done job: " + doneJob);
                         
                         doneJobs.add(job);
-                    }
-                }
+                        System.out.println("done job list" + doneJobs);
             }
-        }catch (Exception e){
+        } catch (Exception e){
             System.err.println("Error: " + e.getMessage());
         }
     }

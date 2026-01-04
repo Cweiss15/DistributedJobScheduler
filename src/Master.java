@@ -1,7 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Master {
     private static SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();

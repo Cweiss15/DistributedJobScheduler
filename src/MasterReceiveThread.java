@@ -1,6 +1,6 @@
 import java.io.BufferedReader;
 
-public class MasterReceiveThread extends Thread {
+public class MasterReceiveThread implements Runnable {
     private SynchronizedJobQueue jobs;
     private BufferedReader clientIn;
     private boolean forever = true;

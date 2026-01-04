@@ -21,13 +21,21 @@ public class SynchronizedJobQueue {
         }
         return queue.poll();
     }
-
-    public synchronized boolean isEmpty() {
-        return queue.isEmpty();
-    }
     
     @Override
     public String toString() {
         return queue.toString();
+    }
+
+    public synchronized Job peek() {
+        while (queue.isEmpty()) {
+            try {
+                wait();
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                Thread.currentThread().interrupt();
+            }
+        }
+        return queue.peek();
     }
 }

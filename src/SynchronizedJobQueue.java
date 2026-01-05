@@ -17,11 +17,10 @@ public class SynchronizedJobQueue {
                 System.out.println("Error: " + e.getMessage());
                 Thread.currentThread().interrupt();
             }
-
         }
         return queue.poll();
     }
-    
+
     @Override
     public String toString() {
         return queue.toString();

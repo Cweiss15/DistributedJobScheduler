@@ -43,12 +43,12 @@ public class ClientB {
             }
 
             String doneJob;
-            SynchronizedJobQueue jobQueues = new SynchronizedJobQueue();
-            ClientToUserThread sendToUser = new ClientToUserThread(jobQueues, clientOut, 'B');
+            SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
+            Thread sendToUser = new Thread(new ClientToUserThread(doneJobs, clientOut, 'B'));
             sendToUser.start();
             while ((doneJob = masterIn.readLine()) != null) {
                 Job job = new Job(doneJob);
-                jobQueue.add(job);
+                doneJobs.add(job);
             }
 
 

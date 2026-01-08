@@ -1,8 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ClientToUserThread {
+public class ClientToUserThread implements Runnable {
     private PrintWriter userOut;
     private SynchronizedJobQueue doneJobs;
     private char client;
@@ -17,9 +15,11 @@ public class ClientToUserThread {
     public void run() {
         while (true) {
             Job job = doneJobs.poll();
-            System.out.println("Client sending done job to user: " + job);
-            userOut.println(job);
-            userOut.flush();
+            if (job != null) {
+                System.out.println("Client sending done job to user: " + job);
+                userOut.println(job);
+                userOut.flush();
+            }
         }
     }
-    }
+}

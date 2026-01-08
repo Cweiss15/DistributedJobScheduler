@@ -24,8 +24,9 @@ public class SlaveB {
             masterHost = args[0];
             masterPort = Integer.parseInt(args[1]);
         } else {
-            System.err.println("Usage: java SlaveB <masterHost> <masterPort>");
-            System.exit(1);
+            // Default to localhost:31223 (slave port)
+            masterHost = "127.0.0.1";
+            masterPort = 31223;
         }
 
         // display that slave has started
@@ -37,8 +38,6 @@ public class SlaveB {
              PrintWriter out = new PrintWriter(masterSocket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()))) {
 
-
-            out.println("READY:" + SLAVE_ID);
             System.out.println("Slave B connected and ready.");
 
             String jobMessage;
@@ -55,7 +54,6 @@ public class SlaveB {
                     break;
                 } catch (Exception e) {
                     System.err.println("Error processing job: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
 

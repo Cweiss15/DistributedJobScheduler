@@ -11,12 +11,15 @@ public class MasterReceiveThread implements Runnable {
     }
 
     public void run() {
+        System.out.println("MasterReceiveThread started and waiting for jobs from client");
+        System.out.flush();
         while (forever) {
             try {
                 // read in a line from the client to put on the job queue
                 String line = clientIn.readLine();
                 if (line != null) {
                     System.out.println("Master received job from client: " + line);
+                    System.out.flush();
                     Job job = new Job(line);
                     jobs.add(job);
                 }

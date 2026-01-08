@@ -13,7 +13,7 @@ public class MasterToClientThread implements Runnable {
     public void run() {
         while (true) {
             // get the next done job from the doneJobs queue
-            Job job = doneJobs.peek();
+            Job job = doneJobs.poll();
             System.out.println("Master sending done job to client: " + job);
             clientOut.println(job);
             clientOut.flush();

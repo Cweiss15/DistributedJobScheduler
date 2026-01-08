@@ -14,6 +14,7 @@ public class ClientToMasterThread extends Thread {
             Job job = jobs.poll();
             System.out.println("Client sending job to master: " + job);
             masterOut.println(job.toString());
+            masterOut.flush();
         }
     }
 }

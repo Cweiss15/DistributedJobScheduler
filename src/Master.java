@@ -9,26 +9,30 @@ public class Master {
 
     public static void main(String[] args) {
         System.out.println("This is Master");
-        args = new String[]{"31222", ""};
+        args = new String[]{"31222", "31223"};
 
-        int portNumber = Integer.parseInt(args[0]);
+        int clientPort = Integer.parseInt(args[0]);
+        int slavePort = Integer.parseInt(args[1]);
 
-        try (ServerSocket serverSocket = new ServerSocket(portNumber);
-             Socket clientSocket = serverSocket.accept();
+        try (ServerSocket clientServerSocket = new ServerSocket(clientPort);
+             ServerSocket slaveServerSocket = new ServerSocket(slavePort);
+             Socket clientSocket = clientServerSocket.accept();
              PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
              BufferedReader clientIn = new BufferedReader(
                      new InputStreamReader(clientSocket.getInputStream()));
 
-             Socket slaveASocket = serverSocket.accept();
+             Socket slaveASocket = slaveServerSocket.accept();
              PrintWriter slaveAOut = new PrintWriter(slaveASocket.getOutputStream(), true);
              BufferedReader slaveAIn = new BufferedReader(
                      new InputStreamReader(slaveASocket.getInputStream()));
 
-             Socket slaveBSocket = serverSocket.accept();
+             Socket slaveBSocket = slaveServerSocket.accept();
              PrintWriter slaveBOut = new PrintWriter(slaveBSocket.getOutputStream(), true);
              BufferedReader slaveBIn = new BufferedReader(
                      new InputStreamReader(slaveBSocket.getInputStream()))) {
 
+            System.out.println("All connections established! Starting threads...");
+            System.out.flush();
 
             //the thread reads from the client and puts the jobs on the Queue
             Thread clientToMasterThread = new Thread(new MasterReceiveThread(jobQueue, clientIn));

@@ -8,8 +8,8 @@ public class SlaveA {
     public static void main(String[] args) {
         System.out.println("This is Slave A.");
 
-        // Default to localhost:31222 if no args provided
-        args = new String[]{"127.0.0.1", "31222"};
+        // Default to localhost:31223 (slave)
+        args = new String[]{"127.0.0.1", "31223"};
         
         //get the master host and port number
         masterHost = args[0];

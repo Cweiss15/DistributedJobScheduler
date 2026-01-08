@@ -1,19 +1,19 @@
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
-public class MasterToSlaveThread implements Runnable{
-    private final PrintWriter slaveBOut;
-    private BufferedReader slaveBIn;
-    private SynchronizedJobQueue BJobs;
+public class MasterToSlaveThread implements Runnable {
+    private final PrintWriter slaveOut;
+    private BufferedReader slaveIn;
+    private SynchronizedJobQueue jobQueue;
     private SynchronizedJobQueue doneJobs;
-    private char slaveName;
     private boolean forever = true;
 
-    //constructor
-    public MasterToSlaveThread(BufferedReader slaveBIn, PrintWriter slaveBOut, SynchronizedJobQueue BJobs, SynchronizedJobQueue doneJobs) {
-        this.slaveBIn = slaveBIn;
-        this.slaveBOut = slaveBOut;
-        this.BJobs = BJobs;
+    // constructor
+    public MasterToSlaveThread(BufferedReader slaveIn, PrintWriter slaveOut, SynchronizedJobQueue jobQueue,
+            SynchronizedJobQueue doneJobs) {
+        this.slaveIn = slaveIn;
+        this.slaveOut = slaveOut;
+        this.jobQueue = jobQueue;
         this.doneJobs = doneJobs;
     }
 
@@ -21,21 +21,21 @@ public class MasterToSlaveThread implements Runnable{
     public void run() {
         try {
             while (forever) {
-                // sends job to slave B
-                Job job = BJobs.poll();
-                System.out.println(job.toString()+" given to slave " + slaveName);
-                slaveBOut.println(job);
-                slaveBOut.flush();
+                // sends job to slave
+                Job job = jobQueue.poll();
+                System.out.println(job.toString() + " given to slave");
+                slaveOut.println(job.toString());
+                slaveOut.flush();
 
                 // Wait for slave to respond with a done job
-                String doneJob = slaveBIn.readLine();
-                System.out.println("Slave " + slaveName + " returned a done job: " + doneJob);
+                String doneJob = slaveIn.readLine();
+                System.out.println("Slave returned a done job: " + doneJob);
 
                 doneJobs.add(job);
-                System.out.println("done job list" + doneJobs);
             }
-        } catch (Exception e){
-            System.err.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Error in MasterToSlaveThread: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

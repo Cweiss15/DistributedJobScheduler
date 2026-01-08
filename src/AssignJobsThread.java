@@ -14,7 +14,8 @@ public class AssignJobsThread implements Runnable {
 
     public void run() {
         //test
-        System.out.println("Assigning Jobs");
+        System.out.println("AssignJobsThread started");
+        System.out.flush();
         while (forever) {
             Job job = jobList.poll();
             System.out.println("AssignJobsThread got job: " + job);

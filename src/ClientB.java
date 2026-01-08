@@ -41,9 +41,9 @@ public class ClientB {
 
             String doneJob;
             SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
-            while ((doneJob = masterIn.readLine()) != null) {
-                System.out.println("completed job: " + doneJob);
-            }
+            //while ((doneJob = masterIn.readLine()) != null) {
+                System.out.println("completed jobs: " + doneJobs);
+            //}
 
         } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);

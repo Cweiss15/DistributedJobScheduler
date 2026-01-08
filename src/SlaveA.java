@@ -37,7 +37,7 @@ public class SlaveA {
                 try {
                     Job job = new Job(jobMessage);
                     char jobType = job.getType();
-                    int jobId = job.getId();
+                    String jobId = job.getId();
 
                     System.out.println("Slave A processing job type:" + jobType);
 

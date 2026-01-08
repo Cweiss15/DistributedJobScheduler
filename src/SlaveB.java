@@ -1,32 +1,44 @@
 import java.io.*;
 import java.net.*;
+import java.util.Properties;
 
 public class SlaveB {
+    // Configuration constants
+    private static final long TYPE_B_PROCESSING_TIME_MS = 2000;
+    private static final long TYPE_A_PROCESSING_TIME_MS = 10000;
+    private static final String SLAVE_ID = "B";
+
     private static String masterHost;
     private static int masterPort;
 
     public static void main(String[] args) {
         System.out.println("This is Slave B.");
 
-        // Default to localhost:31222 if no args provided
-        args = new String[]{"127.0.0.1", "31222"};
-        
-        //get the master host and port number
-        masterHost = args[0];
-        masterPort = Integer.parseInt(args[1]);
+        // Load configuration from file if exists, otherwise use args
+        Properties config = loadConfiguration("properties");
 
-        // display to console that slave has started
+        if (config != null && config.containsKey("master.host") && config.containsKey("master.port")) {
+            masterHost = config.getProperty("master.host");
+            masterPort = Integer.parseInt(config.getProperty("master.port"));
+        } else if (args.length >= 2) {
+            masterHost = args[0];
+            masterPort = Integer.parseInt(args[1]);
+        } else {
+            System.err.println("Usage: java SlaveB <masterHost> <masterPort>");
+            System.exit(1);
+        }
+
+        // display that slave has started
         System.out.println("Slave B starting...");
         System.out.println("Connecting to Master at " + masterHost + ":" + masterPort);
 
-        //connecting to Master, socket connection to master
-        //creating input and output streams for communication
-        try (Socket masterSocket = new Socket(masterHost ,masterPort);
+        // Connecting to Master, socket connection to master
+        try (Socket masterSocket = new Socket(masterHost, masterPort);
              PrintWriter out = new PrintWriter(masterSocket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader( new InputStreamReader(masterSocket.getInputStream()))) {
+             BufferedReader in = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()))) {
 
-            // inform master that this slave is ready to receive jobs
-            //out.println("READY:B");
+
+            out.println("READY:" + SLAVE_ID);
             System.out.println("Slave B connected and ready.");
 
             String jobMessage;
@@ -36,35 +48,16 @@ public class SlaveB {
                 // Parse the job data
                 try {
                     Job job = new Job(jobMessage);
-                    char jobType = job.getType();
-                    String jobId = job.getId();
-
-                    System.out.println("Slave B processing job type:" + jobType);
-
-                    // optimization for type B jobs
-                    if (jobType == 'B') {
-                        System.out.println("Optimal job for Slave B");
-                        Thread.sleep(2000);
-                    } else if (jobType == 'A') {
-                        System.out.println("Non-Optimal job for Slave B");
-                        Thread.sleep(10000);
-                    } else {
-                        System.err.println("Unknown job type: " + jobType);
-                        continue;
-                    }
-
-                    System.out.println("Slave B completed job " + jobId);
-                    // Send back the completed job in the same format
-                    out.println(job.toString());
+                    processJob(job, out);
                 } catch (InterruptedException e) {
                     System.err.println("Job processing interrupted: " + e.getMessage());
                     Thread.currentThread().interrupt();
+                    break;
                 } catch (Exception e) {
                     System.err.println("Error processing job: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
-            // TODO another println for testing
 
         } catch (UnknownHostException e) {
             System.err.println("Unknown host: " + masterHost);
@@ -76,9 +69,48 @@ public class SlaveB {
             System.err.println("Unexpected error: " + e.getMessage());
             e.printStackTrace();
         }
+    }
 
+    // Process a job based on its type
+    private static void processJob(Job job, PrintWriter out) throws InterruptedException {
+        char jobType = job.getType();
+        String jobId = job.getId();
+
+        System.out.println("Slave B processing job type: " + jobType);
+
+        // configuration processing times (non-hard coded)
+        switch (jobType) {
+            case 'B':
+                System.out.println("Optimal job for Slave B");
+                Thread.sleep(TYPE_B_PROCESSING_TIME_MS);
+                break;
+            case 'A':
+                System.out.println("Non-Optimal job for Slave B");
+                Thread.sleep(TYPE_A_PROCESSING_TIME_MS);
+                break;
+            default:
+                System.err.println("Unknown job type: " + jobType);
+                return;
+        }
+
+        System.out.println("Slave B completed job " + jobId);
+        out.println(job.toString());
+    }
+
+    // Load configuration from properties
+    private static Properties loadConfiguration(String filename) {
+        Properties properties = new Properties();
+
+        // Try to load from current directory first
+        File configFile = new File(filename);
+        if (configFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(configFile)) {
+                properties.load(fis);
+                return properties;
+            } catch (IOException e) {
+                System.err.println("Warning: Could not load configuration file: " + e.getMessage());
+            }
+        }
+        return null;
     }
 }
-
-
-

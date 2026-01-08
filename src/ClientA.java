@@ -8,23 +8,19 @@ public class ClientA {
         System.out.println("This is Client A");
         // Setup port
         args = new String[] { "127.0.0.1", "31222" };
-        if (args.length != 2) {
-            System.err.println("Usage: java EchoClient <host name> <port number>");
-            System.exit(1);
-        }
 
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
 
         // Setup client server communication
         try (Socket masterSocket = new Socket(hostName, portNumber);
-                PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
-                BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
+             PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
+             BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
 
-                Socket clientSocket = new Socket(hostName, portNumber);
-                PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
-                PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+             Socket clientSocket = new Socket(hostName, portNumber);
+             PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
+             PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
+             BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
             // Read in from client (should this also be a thread)
             // Send to master (is a thread)

@@ -10,7 +10,7 @@ public class MasterToSlaveAThread implements Runnable {
 
     // constructor
     public MasterToSlaveAThread(BufferedReader slaveAIn, PrintWriter slaveAOut, SynchronizedJobQueue AJobs,
-            SynchronizedJobQueue doneJobs) {
+                                SynchronizedJobQueue doneJobs) {
         this.slaveAIn = slaveAIn;
         this.slaveAOut = slaveAOut;
         this.AJobs = AJobs;

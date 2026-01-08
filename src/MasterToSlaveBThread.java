@@ -21,17 +21,17 @@ public class MasterToSlaveBThread implements Runnable{
         try {
             while (forever) {
                 // sends job to slave B
-                    Job job = BJobs.poll();
-                        System.out.println(job.toString()+" given to slave B");
-                        slaveBOut.println(job);
-                        slaveBOut.flush();
-                        
-                        // Wait for slave to respond with a done job
-                        String doneJob = slaveBIn.readLine();
-                        System.out.println("Slave B returned a done job: " + doneJob);
-                        
-                        doneJobs.add(job);
-                        System.out.println("done job list" + doneJobs);
+                Job job = BJobs.poll();
+                System.out.println(job.toString()+" given to slave B");
+                slaveBOut.println(job);
+                slaveBOut.flush();
+
+                // Wait for slave to respond with a done job
+                String doneJob = slaveBIn.readLine();
+                System.out.println("Slave B returned a done job: " + doneJob);
+
+                doneJobs.add(job);
+                System.out.println("done job list" + doneJobs);
             }
         } catch (Exception e){
             System.err.println("Error: " + e.getMessage());

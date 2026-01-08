@@ -39,11 +39,11 @@ public class Master {
             assignJobsThread.start();
 
             //thread that takes jobs from the AJob list, waits for a done signal from the slave and sends the finished jobs back to the client
-            Thread masterTOSlaveAThread = new Thread(new MasterToSlaveAThread(slaveAIn, slaveAOut, AJobs, doneJobs));
+            Thread masterTOSlaveAThread = new Thread(new MasterToSlaveThread(slaveAIn, slaveAOut, AJobs, doneJobs));
             masterTOSlaveAThread.start();
 
             //thread that takes jobs from the BJob list, waits for a done signal from the slave and sends the finished jobs back to the client
-            Thread masterTOSlaveBThread = new Thread(new MasterToSlaveBThread(slaveBIn, slaveBOut, BJobs, doneJobs));
+            Thread masterTOSlaveBThread = new Thread(new MasterToSlaveThread(slaveBIn, slaveBOut, BJobs, doneJobs));
             masterTOSlaveBThread.start();
 
             //sends finished jobs back to the client, takes jobs from donelist and sends to client

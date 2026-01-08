@@ -4,7 +4,7 @@ public class ClientToMasterThread extends Thread {
     private SynchronizedJobQueue jobs;
     private PrintWriter masterOut;
 
-    public ClientToMasterThread(SynchronizedJobQueue jobs, PrintWriter masterOut) {
+    public ClientToMasterThread(SynchronizedJobQueue jobs, PrintWriter masterOut, char clientName) {
         this.jobs = jobs;
         this.masterOut = masterOut;
     }

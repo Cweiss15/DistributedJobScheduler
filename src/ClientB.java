@@ -1,15 +1,13 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class ClientB {
     public static void main(String[] args) throws IOException {
-        //This is to distinguish Client and Master in console
+        // This is to distinguish Client and Master in console
         System.out.println("This is Client B");
-        //Setup port
+        // Setup port
         args = new String[]{"127.0.0.1", "31222"};
         if (args.length != 2) {
             System.err.println("Usage: java EchoClient <host name> <port number>");
@@ -19,43 +17,40 @@ public class ClientB {
         String hostName = args[0];
         int portNumber = Integer.parseInt(args[1]);
 
-        //Setup client server communication
-        try
-                (Socket masterSocket = new Socket(hostName, portNumber);
-                 PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
-                 BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
+        // Setup client server communication
+        try (Socket masterSocket = new Socket(hostName, portNumber);
+             PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
+             BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
 
-                Socket clientSocket = new Socket(hostName, portNumber);
-                PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
-                PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader clientIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())))
-
-        {
+             Socket clientSocket = new Socket(hostName, portNumber);
+             PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
+             PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
+             BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
 
             String sendJob;
+            char client = 'B';
             SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
-            Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut);
+            Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut, client);
             sendToMaster.start();
-            while ((sendJob = userIn.readLine()) != null) {
-                Job job = new Job(sendJob);
+            int ctr = 1;
+            char jobType = 'X';
+            while (jobType != 'D') {
+                Scanner in = new Scanner(System.in);
+                System.out.println("Enter job type, A or B, for job " + ctr + " (or done to exit): ");
+                jobType = in.nextLine().toUpperCase().charAt(0);
+                Job job = new Job(jobType, ("" + ctr + client));
                 jobQueue.add(job);
+
+                String doneJob;
+                SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
+                while ((doneJob = masterIn.readLine()) != null) {
+                    System.out.println("completed job: " + doneJob);
+                }
             }
-
-            String doneJob;
-            SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
-            Thread sendToUser = new Thread(new ClientToUserThread(doneJobs, clientOut, 'B'));
-            sendToUser.start();
-            while ((doneJob = masterIn.readLine()) != null) {
-                Job job = new Job(doneJob);
-                doneJobs.add(job);
-            }
-
-
-        } catch(UnknownHostException var50){
+        } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);
-        } catch(IOException var51){
+        } catch (IOException var51) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }

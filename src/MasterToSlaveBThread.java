@@ -20,6 +20,7 @@ public class MasterToSlaveBThread implements Runnable{
     public void run() {
         try {
             while (forever) {
+                // sends job to slave B
                     Job job = BJobs.poll();
                         System.out.println(job.toString()+" given to slave B");
                         slaveBOut.println(job);

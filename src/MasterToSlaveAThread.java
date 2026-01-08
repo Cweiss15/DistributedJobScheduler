@@ -21,6 +21,7 @@ public class MasterToSlaveAThread implements Runnable {
     public void run() {
         try {
             while (forever) {
+                // sends job to slave A
                 Job job = AJobs.poll();
                 System.out.println(job.toString() + " given to slave A");
                 slaveAOut.println(job);

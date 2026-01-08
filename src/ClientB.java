@@ -40,13 +40,15 @@ public class ClientB {
                 jobType = in.nextLine().toUpperCase().charAt(0);
                 Job job = new Job(jobType, ("" + ctr + client));
                 jobQueue.add(job);
-
-                String doneJob;
-                SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
-                while ((doneJob = masterIn.readLine()) != null) {
-                    System.out.println("completed job: " + doneJob);
-                }
+                ctr++;
             }
+
+            String doneJob;
+            SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
+            while ((doneJob = masterIn.readLine()) != null) {
+                System.out.println("completed job: " + doneJob);
+            }
+
         } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);

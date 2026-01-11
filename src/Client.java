@@ -3,19 +3,21 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class ClientA {
+public class Client {
     public static void main(String[] args) throws IOException {
-        // This is to distinguish Client and Master in console
-        System.out.println("This is Client A");
+
         // Setup port
-        args = new String[]{"127.0.0.1", "31222"};
-        if (args.length != 2) {
+        String hostName = args[0];
+        int portNumber = Integer.parseInt(args[1]);
+        String clientName = args[2];
+        args = new String[]{"127.0.0.1", "31222", clientName};
+
+        if (args.length != 3) {
             System.err.println("Usage: java EchoClient <host name> <port number>");
             System.exit(1);
         }
-
-        String hostName = args[0];
-        int portNumber = Integer.parseInt(args[1]);
+        // This is to distinguish Client and Master in console
+        System.out.println("This is Client " + clientName);
 
         // Setup client server communication
         try (Socket masterSocket = new Socket(hostName, portNumber);
@@ -23,7 +25,7 @@ public class ClientA {
              BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()))) {
 
             String sendJob;
-            char client = 'A';
+            char client = clientName.charAt(0);
             SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
             Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut, client);
             sendToMaster.start();

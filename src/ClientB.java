@@ -16,12 +16,7 @@ public class ClientB {
         // Setup client server communication
         try (Socket masterSocket = new Socket(hostName, portNumber);
              PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
-             BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()));
-
-             Socket clientSocket = new Socket(hostName, portNumber);
-             PrintWriter userOut = new PrintWriter(clientSocket.getOutputStream(), true);
-             PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
-             BufferedReader userIn = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+             BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()))) {
 
             String sendJob;
             char client = 'B';
@@ -41,9 +36,9 @@ public class ClientB {
 
             String doneJob;
             SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
-            //while ((doneJob = masterIn.readLine()) != null) {
-                System.out.println("completed jobs: " + doneJobs);
-            //}
+            while ((doneJob = masterIn.readLine()) != null) {
+                System.out.println("completed job: " + doneJob);
+            }
 
         } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);

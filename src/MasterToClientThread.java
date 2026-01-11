@@ -1,11 +1,12 @@
 import java.io.PrintWriter;
+import java.util.List;
 
 public class MasterToClientThread implements Runnable {
-    private PrintWriter clientOut;
+    private List<PrintWriter> clientWriters;
     private SynchronizedJobQueue doneJobs;
 
-    public MasterToClientThread(PrintWriter clientOut, SynchronizedJobQueue doneJobs) {
-        this.clientOut = clientOut;
+    public MasterToClientThread(List<PrintWriter> clientWriters, SynchronizedJobQueue doneJobs) {
+        this.clientWriters = clientWriters;
         this.doneJobs = doneJobs;
     }
 
@@ -14,9 +15,15 @@ public class MasterToClientThread implements Runnable {
         while (true) {
             // get the next done job from the doneJobs queue
             Job job = doneJobs.poll();
-            System.out.println("Master sending done job to client: " + job);
-            clientOut.println(job);
-            clientOut.flush();
+            System.out.println("Master sending done job to all clients: " + job);
+            
+            // Send to all connected clients
+            synchronized (clientWriters) {
+                for (PrintWriter clientOut : clientWriters) {
+                    clientOut.println(job);
+                    clientOut.flush();
+                }
+            }
         }
     }
 }

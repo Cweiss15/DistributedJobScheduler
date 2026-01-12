@@ -1,9 +1,0 @@
-# Slave B Configuration File
-
-# Master server connection settings
-master.host=127.0.0.1
-master.port=31223
-
-# Job processing times
-type.b.processing.time=2000
-type.a.processing.time=10000

@@ -23,7 +23,7 @@ public class Master {
         try {
             ServerSocket clientServerSocket = new ServerSocket(clientPort);
             ServerSocket slaveServerSocket = new ServerSocket(slavePort);
-            
+
             Socket slaveASocket = slaveServerSocket.accept();
             PrintWriter slaveAOut = new PrintWriter(slaveASocket.getOutputStream(), true);
             BufferedReader slaveAIn = new BufferedReader(

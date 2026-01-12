@@ -5,7 +5,7 @@ public class MasterReceiveThread implements Runnable {
     private BufferedReader clientIn;
     private boolean forever = true;
     private char clientType;
-
+    //This thread master reads in jobs from the client and adds them to the synchronized jobs queue
     public MasterReceiveThread(SynchronizedJobQueue jobs, BufferedReader clientIn, char clientType) {
         this.jobs = jobs;
         this.clientIn = clientIn;

@@ -60,17 +60,14 @@ public class Master {
                 PrintWriter clientOut = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader clientIn = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
-
                 System.out.println("Client connected");
-
+                //reads in client name from first line sent by client
                 char clientType = clientIn.readLine().charAt(0);
-
+                //add client output and client name together to the map of clients
                 synchronized (allClientWriters) {
                     allClientWriters.put(clientOut, clientType);
                     System.out.println("Total connected clients: " + allClientWriters.size());
                 }
-
-
 
                 // The thread reads from the client and puts jobs on the queue
                 Thread clientThread = new Thread(new MasterReceiveThread(jobQueue, clientIn, clientType));

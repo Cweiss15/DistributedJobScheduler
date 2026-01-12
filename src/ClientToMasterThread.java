@@ -4,7 +4,7 @@ public class ClientToMasterThread extends Thread {
     private SynchronizedJobQueue jobs;
     private PrintWriter masterOut;
     private char clientType;
-
+    //This thread sends user's jobs from client to master
     public ClientToMasterThread(SynchronizedJobQueue jobs, PrintWriter masterOut, char clientType) {
         this.jobs = jobs;
         this.masterOut = masterOut;
@@ -13,10 +13,13 @@ public class ClientToMasterThread extends Thread {
 
     public void run() {
         while (true) {
+            //take first job off queue
             Job job = jobs.poll();
-            System.out.println("Client sending job to master: " + job.toPrint());
+            //Send it to the master
             masterOut.println(job.toString());
             masterOut.flush();
+            System.out.println("Client sending job to master: " + job.toPrint());
+
         }
     }
 }

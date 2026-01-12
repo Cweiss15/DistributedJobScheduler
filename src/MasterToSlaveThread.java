@@ -8,7 +8,7 @@ public class MasterToSlaveThread implements Runnable {
     private SynchronizedJobQueue doneJobs;
     private boolean forever = true;
 
-    // constructor
+    // This thread is used by the master to send jobs to the slaves
     public MasterToSlaveThread(BufferedReader slaveIn, PrintWriter slaveOut, SynchronizedJobQueue jobQueue,
                                SynchronizedJobQueue doneJobs) {
         this.slaveIn = slaveIn;

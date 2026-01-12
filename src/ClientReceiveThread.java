@@ -5,7 +5,7 @@ public class ClientReceiveThread implements Runnable {
     private BufferedReader masterIn;
     private boolean forever = true;
     private char clientType;
-
+    //This thread receives back done jobs from the master and prints done job to the user
     public ClientReceiveThread(SynchronizedJobQueue doneJobs, BufferedReader masterIn, char clientType) {
         this.doneJobs = doneJobs;
         this.masterIn = masterIn;
@@ -18,6 +18,7 @@ public class ClientReceiveThread implements Runnable {
         String doneJob;
         while (forever) {
             try {
+                //when master sends job read it and print to user
                 while ((doneJob = masterIn.readLine()) != null) {
                     Job job = new Job(doneJob);
                     System.out.println("completed job: " + job.toPrint());

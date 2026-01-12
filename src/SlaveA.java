@@ -10,30 +10,28 @@ public class SlaveA {
 
         // Default to localhost:31223 (slave)
         args = new String[]{"127.0.0.1", "31223"};
-        
-        //get the master host and port number
+
+        // Parse connection of masterHost and masterPort
         masterHost = args[0];
         masterPort = Integer.parseInt(args[1]);
 
-        // display to console that slave has started
         System.out.println("Slave A starting...");
         System.out.println("Connecting to Master at " + masterHost + ":" + masterPort);
 
-        //connecting to Master, socket connection to master
+        // Establish connection to Master
         //creating input and output streams for communication
         try (Socket masterSocket = new Socket(masterHost ,masterPort);
              PrintWriter out = new PrintWriter(masterSocket.getOutputStream(), true);
              BufferedReader in = new BufferedReader( new InputStreamReader(masterSocket.getInputStream()))) {
 
-            // inform master that this slave is ready to receive jobs
             System.out.println("Slave A connected and ready.");
 
+            // Main processing loop, receives and processes jobs from Master
             String jobMessage;
             while ((jobMessage = in.readLine()) != null) {
                 Job job = new Job(jobMessage);
                 System.out.println("Slave A received job: " + job.toPrint());
 
-                // Parse the job data
                 try {
                     char jobType = job.getType();
                     String jobId = job.getId();
@@ -51,11 +49,8 @@ public class SlaveA {
                         System.err.println("Unknown job type: " + jobType);
                         continue;
                     }
-
+                    // Sned completed job back to Master
                     System.out.println("Slave A completed job " + jobId);
-                    // Send back the completed job in the same format
-                    //out.println("DONE:" + job.toString());
-                    //question for sonya: the master assumes that if a job is sent back its done do we need to write done because it would be easier to just send back the job itself
                     out.println(job.toString());
                 } catch (InterruptedException e) {
                     System.err.println("Job processing interrupted: " + e.getMessage());

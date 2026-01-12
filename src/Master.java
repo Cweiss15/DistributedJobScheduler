@@ -70,8 +70,6 @@ public class Master {
                     System.out.println("Total connected clients: " + allClientWriters.size());
                 }
 
-
-
                 // The thread reads from the client and puts jobs on the queue
                 Thread clientThread = new Thread(new MasterReceiveThread(jobQueue, clientIn, clientType));
                 clientThread.setDaemon(true);

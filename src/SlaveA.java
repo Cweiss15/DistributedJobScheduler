@@ -4,19 +4,16 @@ import java.net.*;
 public class SlaveA {
     private static String masterHost;
     private static int masterPort;
-    private static String slaveName = "A";
 
     public static void main(String[] args) {
         System.out.println("This is Slave A.");
 
         // Default to localhost:31223 (slave)
-        args = new String[]{"127.0.0.1", "31223", slaveName};
+        args = new String[]{"127.0.0.1", "31223"};
         
         //get the master host and port number
         masterHost = args[0];
         masterPort = Integer.parseInt(args[1]);
-        slaveName= args[2];
-
 
         // display to console that slave has started
         System.out.println("Slave A starting...");
@@ -29,7 +26,6 @@ public class SlaveA {
              BufferedReader in = new BufferedReader( new InputStreamReader(masterSocket.getInputStream()))) {
 
             // inform master that this slave is ready to receive jobs
-            //out.println("READY:A");
             System.out.println("Slave A connected and ready.");
 
             String jobMessage;
@@ -44,7 +40,7 @@ public class SlaveA {
 
                     System.out.println("Slave A processing job type:" + jobType);
 
-                    // optimization for type A jobs
+                    // Optimization for type A jobs
                     if (jobType == 'A') {
                         System.out.println("Optimal job for Slave A");
                         Thread.sleep(2000);
@@ -69,7 +65,6 @@ public class SlaveA {
                     e.printStackTrace();
                 }
             }
-        // TODO another println for testing
 
         } catch (UnknownHostException e) {
             System.err.println("Unknown host: " + masterHost);

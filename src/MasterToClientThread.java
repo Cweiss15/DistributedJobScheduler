@@ -1,5 +1,4 @@
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Map;
 
 public class MasterToClientThread implements Runnable {
@@ -23,8 +22,11 @@ public class MasterToClientThread implements Runnable {
             // Send to all connected clients
             synchronized (clientWriters) {
                 for (Map.Entry<PrintWriter, Character> entry : clientWriters.entrySet()) {
-                    entry.getKey().println(job);
-                    entry.getKey().flush();
+                    if(entry.getValue() == clientToSend) {
+                        entry.getKey().println(job);
+                        entry.getKey().flush();
+                    }
+
                 }
             }
         }

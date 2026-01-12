@@ -20,9 +20,9 @@ public class MasterReceiveThread implements Runnable {
                 // read in a line from the client to put on the job queue
                 String line = clientIn.readLine();
                 if (line != null) {
-                    System.out.println("Master received job from client: " + line);
-                    System.out.flush();
                     Job job = new Job(line);
+                    System.out.println("Master received job from client: " + job.toPrint());
+                    System.out.flush();
                     jobs.add(job);
                 }
             } catch (Exception e) {

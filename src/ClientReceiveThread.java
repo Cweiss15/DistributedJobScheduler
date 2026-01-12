@@ -18,8 +18,9 @@ public class ClientReceiveThread implements Runnable {
         String doneJob;
         while (forever) {
             try {
-                    while ((doneJob = masterIn.readLine()) != null) {
-                    System.out.println("completed job: " + doneJob);
+                while ((doneJob = masterIn.readLine()) != null) {
+                    Job job = new Job(doneJob);
+                    System.out.println("completed job: " + job.toPrint());
 
                 }
             } catch (Exception e) {

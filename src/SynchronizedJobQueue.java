@@ -37,4 +37,8 @@ public class SynchronizedJobQueue {
         }
         return queue.peek();
     }
+
+    public int size () {
+        return queue.size();
+    }
 }

@@ -10,7 +10,7 @@ public class MasterToSlaveThread implements Runnable {
 
     // constructor
     public MasterToSlaveThread(BufferedReader slaveIn, PrintWriter slaveOut, SynchronizedJobQueue jobQueue,
-            SynchronizedJobQueue doneJobs) {
+                               SynchronizedJobQueue doneJobs) {
         this.slaveIn = slaveIn;
         this.slaveOut = slaveOut;
         this.jobQueue = jobQueue;
@@ -29,7 +29,8 @@ public class MasterToSlaveThread implements Runnable {
 
                 // Wait for slave to respond with a done job
                 String doneJob = slaveIn.readLine();
-                System.out.println("Slave returned a done job: " + doneJob);
+                Job done = new Job(doneJob);
+                System.out.println("Slave returned a done job: " + done.toPrint());
 
                 doneJobs.add(job);
             }

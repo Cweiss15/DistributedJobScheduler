@@ -42,11 +42,11 @@ public class SlaveB {
 
             String jobMessage;
             while ((jobMessage = in.readLine()) != null) {
-                System.out.println("Slave B received job: " + jobMessage);
+                Job job = new Job(jobMessage);
+                System.out.println("Slave B received job: " + job.toPrint());
 
                 // Parse the job data
                 try {
-                    Job job = new Job(jobMessage);
                     processJob(job, out);
                 } catch (InterruptedException e) {
                     System.err.println("Job processing interrupted: " + e.getMessage());

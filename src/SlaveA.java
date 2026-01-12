@@ -34,11 +34,11 @@ public class SlaveA {
 
             String jobMessage;
             while ((jobMessage = in.readLine()) != null) {
-                System.out.println("Slave A received job: " + jobMessage);
+                Job job = new Job(jobMessage);
+                System.out.println("Slave A received job: " + job.toPrint());
 
                 // Parse the job data
                 try {
-                    Job job = new Job(jobMessage);
                     char jobType = job.getType();
                     String jobId = job.getId();
 

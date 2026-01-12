@@ -30,7 +30,7 @@ public class SlaveB {
             String jobMessage;
             while ((jobMessage = in.readLine()) != null) {
                 Job job = new Job(jobMessage);
-                System.out.println("Slave A received job: " + job.toPrint());
+                System.out.println("Slave B received job: " + job.toPrint());
 
                 try {
                     char jobType = job.getType();

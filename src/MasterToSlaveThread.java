@@ -32,7 +32,7 @@ public class MasterToSlaveThread implements Runnable {
                 Job done = new Job(doneJob);
                 System.out.println("Slave returned a done job: " + done.toPrint());
 
-                doneJobs.add(job);
+                doneJobs.add(done);
             }
         } catch (Exception e) {
             System.err.println("Error in MasterToSlaveThread: " + e.getMessage());

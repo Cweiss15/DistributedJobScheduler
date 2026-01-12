@@ -4,16 +4,19 @@ import java.net.*;
 public class SlaveA {
     private static String masterHost;
     private static int masterPort;
+    private static String slaveName = "A";
 
     public static void main(String[] args) {
         System.out.println("This is Slave A.");
 
         // Default to localhost:31223 (slave)
-        args = new String[]{"127.0.0.1", "31223"};
+        args = new String[]{"127.0.0.1", "31223", slaveName};
         
         //get the master host and port number
         masterHost = args[0];
         masterPort = Integer.parseInt(args[1]);
+        slaveName= args[2];
+
 
         // display to console that slave has started
         System.out.println("Slave A starting...");

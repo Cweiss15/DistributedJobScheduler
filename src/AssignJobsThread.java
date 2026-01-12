@@ -18,7 +18,7 @@ public class AssignJobsThread implements Runnable {
         System.out.flush();
         while (forever) {
             Job job = jobList.poll();
-            System.out.println("AssignJobsThread got job: " + job);
+            System.out.println("AssignJobsThread got job: " + job.toPrint());
             // if Slave B already has more than 5 more jobs than Slave A then assign the B
             // job to A
             if (countB > (countA + 5) && job.getType() == 'B') {

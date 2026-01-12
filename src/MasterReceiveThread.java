@@ -4,14 +4,16 @@ public class MasterReceiveThread implements Runnable {
     private SynchronizedJobQueue jobs;
     private BufferedReader clientIn;
     private boolean forever = true;
+    private char clientType;
 
-    public MasterReceiveThread(SynchronizedJobQueue jobs, BufferedReader clientIn) {
+    public MasterReceiveThread(SynchronizedJobQueue jobs, BufferedReader clientIn, char clientType) {
         this.jobs = jobs;
         this.clientIn = clientIn;
+        this.clientType = clientType;
     }
 
     public void run() {
-        System.out.println("MasterReceiveThread started and waiting for jobs from client");
+        System.out.println("MasterReceiveThread started and waiting for jobs from client " + clientType);
         System.out.flush();
         while (forever) {
             try {

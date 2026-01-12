@@ -1,14 +1,17 @@
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Master {
     private static SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
     private static SynchronizedJobQueue AJobs = new SynchronizedJobQueue();
     private static SynchronizedJobQueue BJobs = new SynchronizedJobQueue();
     private static SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
-    private static List<PrintWriter> allClientWriters = new ArrayList<>();
+    private static Map<PrintWriter, Character> allClientWriters = new HashMap<>();
+
 
     public static void main(String[] args) {
         System.out.println("This is Master");
@@ -60,13 +63,17 @@ public class Master {
 
                 System.out.println("Client connected");
 
+                char clientType = clientIn.readLine().charAt(0);
+
                 synchronized (allClientWriters) {
-                    allClientWriters.add(clientOut);
+                    allClientWriters.put(clientOut, clientType);
                     System.out.println("Total connected clients: " + allClientWriters.size());
                 }
 
+
+
                 // The thread reads from the client and puts jobs on the queue
-                Thread clientThread = new Thread(new MasterReceiveThread(jobQueue, clientIn));
+                Thread clientThread = new Thread(new MasterReceiveThread(jobQueue, clientIn, clientType));
                 clientThread.setDaemon(true);
                 clientThread.start();
             }

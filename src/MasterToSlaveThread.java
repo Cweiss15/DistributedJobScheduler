@@ -23,8 +23,8 @@ public class MasterToSlaveThread implements Runnable {
             while (forever) {
                 // sends job to slave
                 Job job = jobQueue.poll();
-                System.out.println(job.toString() + " given to slave");
-                slaveOut.println(job.toString());
+                System.out.println(job.toPrint() + " given to slave");
+                slaveOut.println(job);
                 slaveOut.flush();
 
                 // Wait for slave to respond with a done job

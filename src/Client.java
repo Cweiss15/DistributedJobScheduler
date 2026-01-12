@@ -24,11 +24,15 @@ public class Client {
              PrintWriter masterOut = new PrintWriter(masterSocket.getOutputStream(), true);
              BufferedReader masterIn = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()))) {
 
+            masterOut.println(clientName);
+            masterOut.flush();
             String sendJob;
             char client = clientName.charAt(0);
             SynchronizedJobQueue jobQueue = new SynchronizedJobQueue();
             Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut, client);
             sendToMaster.start();
+            Thread clientReceiveThread = new Thread( new ClientReceiveThread(jobQueue, masterIn, client));
+            clientReceiveThread.start();
             int ctr = 1;
             char jobType = 'X';
             while (jobType != 'D') {
@@ -40,12 +44,6 @@ public class Client {
                 ctr++;
             }
 
-            String doneJob;
-            SynchronizedJobQueue doneJobs = new SynchronizedJobQueue();
-            while ((doneJob = masterIn.readLine()) != null) {
-                System.out.println("completed job: " + doneJob);
-
-            }
         } catch (UnknownHostException var50) {
             System.err.println("Don't know about host " + hostName);
             System.exit(1);

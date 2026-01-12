@@ -1,11 +1,12 @@
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 public class MasterToClientThread implements Runnable {
-    private List<PrintWriter> clientWriters;
+    private Map<PrintWriter, Character> clientWriters;
     private SynchronizedJobQueue doneJobs;
 
-    public MasterToClientThread(List<PrintWriter> clientWriters, SynchronizedJobQueue doneJobs) {
+    public MasterToClientThread(Map<PrintWriter, Character> clientWriters, SynchronizedJobQueue doneJobs) {
         this.clientWriters = clientWriters;
         this.doneJobs = doneJobs;
     }
@@ -15,13 +16,15 @@ public class MasterToClientThread implements Runnable {
         while (true) {
             // get the next done job from the doneJobs queue
             Job job = doneJobs.poll();
-            System.out.println("Master sending done job to all clients: " + job);
+            char[] splitID = job.getId().toCharArray();
+            char clientToSend = splitID[1];
+            System.out.println("Master sending done job to client " + clientToSend +": " + job.toPrint());
             
             // Send to all connected clients
             synchronized (clientWriters) {
-                for (PrintWriter clientOut : clientWriters) {
-                    clientOut.println(job);
-                    clientOut.flush();
+                for (Map.Entry<PrintWriter, Character> entry : clientWriters.entrySet()) {
+                    entry.getKey().println(job);
+                    entry.getKey().flush();
                 }
             }
         }

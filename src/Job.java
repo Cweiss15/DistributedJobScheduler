@@ -25,6 +25,9 @@ public class Job {
         return id;
     }
 
+    public String toPrint() {
+        return ("Job ID: " + id + " Type: " + type);
+    }
     @Override
     public String toString() {
         return type + "|" + id + "|";

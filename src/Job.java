@@ -17,10 +17,6 @@ public class Job {
         return type;
     }
 
-    public void setType(char type) {
-        this.type = type;
-    }
-
     public String getId() {
         return id;
     }

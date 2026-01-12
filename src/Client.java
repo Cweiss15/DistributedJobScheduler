@@ -38,7 +38,14 @@ public class Client {
             while (jobType != 'D') {
                 Scanner in = new Scanner(System.in);
                 System.out.println("Enter job type, A or B, for job " + ctr + " (or done to exit): ");
-                jobType = in.nextLine().toUpperCase().charAt(0);
+                jobType = in.next().toUpperCase().charAt(0);
+                while(jobType != 'A' && jobType != 'B' && jobType != 'D') {
+                    System.out.println("Enter job type, A or B, for job " + ctr + ": ");
+                    jobType = in.next().toUpperCase().charAt(0);
+                }
+                if (jobType == 'D') {
+                    continue;
+                }
                 Job job = new Job(jobType, ("" + ctr + client));
                 jobQueue.add(job);
                 ctr++;

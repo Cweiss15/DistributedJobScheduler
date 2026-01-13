@@ -1,3 +1,7 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 

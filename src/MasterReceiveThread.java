@@ -1,3 +1,7 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.io.BufferedReader;
 
 public class MasterReceiveThread implements Runnable {
@@ -5,6 +9,7 @@ public class MasterReceiveThread implements Runnable {
     private BufferedReader clientIn;
     private boolean forever = true;
     private char clientType;
+
     //This thread master reads in jobs from the client and adds them to the synchronized jobs queue
     public MasterReceiveThread(SynchronizedJobQueue jobs, BufferedReader clientIn, char clientType) {
         this.jobs = jobs;

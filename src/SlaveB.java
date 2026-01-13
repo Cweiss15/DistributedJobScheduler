@@ -1,3 +1,7 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.io.*;
 import java.net.*;
 
@@ -20,9 +24,9 @@ public class SlaveB {
 
         // Establish connection to Master
         //creating input and output streams for communication
-        try (Socket masterSocket = new Socket(masterHost ,masterPort);
+        try (Socket masterSocket = new Socket(masterHost, masterPort);
              PrintWriter out = new PrintWriter(masterSocket.getOutputStream(), true);
-             BufferedReader in = new BufferedReader( new InputStreamReader(masterSocket.getInputStream()))) {
+             BufferedReader in = new BufferedReader(new InputStreamReader(masterSocket.getInputStream()))) {
 
             System.out.println("Slave B connected and ready.");
 

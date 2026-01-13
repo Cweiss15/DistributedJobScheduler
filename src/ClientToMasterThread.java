@@ -1,9 +1,14 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.io.PrintWriter;
 
 public class ClientToMasterThread extends Thread {
     private SynchronizedJobQueue jobs;
     private PrintWriter masterOut;
     private char clientType;
+
     //This thread sends user's jobs from client to master
     public ClientToMasterThread(SynchronizedJobQueue jobs, PrintWriter masterOut, char clientType) {
         this.jobs = jobs;

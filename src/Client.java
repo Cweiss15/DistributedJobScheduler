@@ -1,3 +1,7 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -36,7 +40,7 @@ public class Client {
             Thread sendToMaster = new ClientToMasterThread(jobQueue, masterOut, client);
             sendToMaster.start();
             //Start thread to receive back done jobs
-            Thread clientReceiveThread = new Thread( new ClientReceiveThread(jobQueue, masterIn, client));
+            Thread clientReceiveThread = new Thread(new ClientReceiveThread(jobQueue, masterIn, client));
             clientReceiveThread.start();
             int ctr = 1;
             char jobType = 'X';
@@ -47,7 +51,7 @@ public class Client {
                 System.out.println("Enter job type, A or B, for job " + ctr + " (or done to exit): ");
                 jobType = in.next().toUpperCase().charAt(0);
                 //input validation
-                while(jobType != 'A' && jobType != 'B' && jobType != 'D') {
+                while (jobType != 'A' && jobType != 'B' && jobType != 'D') {
                     System.out.println("Enter job type, A or B, for job " + ctr + ": ");
                     jobType = in.next().toUpperCase().charAt(0);
                 }

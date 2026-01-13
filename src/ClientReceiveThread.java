@@ -1,3 +1,7 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.io.BufferedReader;
 
 public class ClientReceiveThread implements Runnable {
@@ -5,6 +9,7 @@ public class ClientReceiveThread implements Runnable {
     private BufferedReader masterIn;
     private boolean forever = true;
     private char clientType;
+
     //This thread receives back done jobs from the master and prints done job to the user
     public ClientReceiveThread(SynchronizedJobQueue doneJobs, BufferedReader masterIn, char clientType) {
         this.doneJobs = doneJobs;

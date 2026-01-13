@@ -1,3 +1,7 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
+
 import java.util.*;
 
 public class SynchronizedJobQueue {
@@ -38,7 +42,7 @@ public class SynchronizedJobQueue {
         return queue.peek();
     }
 
-    public int size () {
+    public int size() {
         return queue.size();
     }
 }

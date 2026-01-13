@@ -1,10 +1,14 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
 public class AssignJobsThread implements Runnable {
-    private  int countA = 0;
-    private   int countB = 0;
+    private int countA = 0;
+    private int countB = 0;
     private SynchronizedJobQueue jobList;
     private SynchronizedJobQueue AJobs;
     private SynchronizedJobQueue BJobs;
     private boolean forever = true;
+
     //This thread is used by the master to decide which slave to send the jobs to and creates a job queue for each slave
     public AssignJobsThread(SynchronizedJobQueue jobList, SynchronizedJobQueue AJobs, SynchronizedJobQueue BJobs) {
         this.jobList = jobList;

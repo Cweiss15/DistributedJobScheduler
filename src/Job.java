@@ -1,3 +1,6 @@
+//Devora Sokol - T00554071
+//Sonya Ginzburg - T00543210
+//Chana Weiss - T00564695
 public class Job {
     private char type;
     private final String id;
@@ -24,6 +27,7 @@ public class Job {
     public String toPrint() {
         return ("Job ID: " + id + " Type: " + type);
     }
+
     @Override
     public String toString() {
         return type + "|" + id + "|";
